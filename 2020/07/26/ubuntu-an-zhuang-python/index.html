@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="redis数据库基本操作, qayqaq">
+    <meta name="keywords" content="ubuntu安装python, qayqaq">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>redis数据库基本操作 | qayqaq</title>
+    <title>ubuntu安装python | qayqaq</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -308,12 +308,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">redis数据库基本操作</h1>
+                    <h1 class="description center-align post-title">ubuntu安装python</h1>
                 </div>
             </div>
         </div>
@@ -430,8 +430,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/redis/">
-                                <span class="chip bg-color">redis</span>
+                            <a href="/tags/python/">
+                                <span class="chip bg-color">python</span>
                             </a>
                         
                     </div>
@@ -446,7 +446,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-07-24
+                    2020-07-26
                 </div>
                 
 
@@ -462,141 +462,54 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="redis下载安装"><a href="#redis下载安装" class="headerlink" title="redis下载安装"></a>redis下载安装</h2><p>依次执行以下命令：</p>
-<pre><code>$ wget http://download.redis.io/releases/redis-3.2.8.tar.gz
-$ tar -zxvf redis-3.2.8.tar.gz
-$ sudo mv ./redis-3.2.8 /usr/local/redis
-$ cd /usr/local/redis
-$ sudo make
-$ sudo make test
-$ sudo make install</code></pre><p>安装完之后，查看 <code>/usr/local/bin</code>，如果有如下即安装成功。</p>
-<pre><code>-rwxr-xr-x 1 root root 3344600 7月  24 14:38 redis-benchmark  # redis性能测试工具
--rwxr-xr-x 1 root root   35872 7月  24 14:38 redis-check-aof  # AOF文件修复工具
--rwxr-xr-x 1 root root 6771608 7月  24 14:38 redis-check-rdb  # RDB文件修复工具
--rwxr-xr-x 1 root root 3564272 7月  24 14:38 redis-cli  # redis命令行客户端
-lrwxrwxrwx 1 root root      12 7月  24 14:38 redis-sentinel -&gt; redis-server
--rwxr-xr-x 1 root root 6771608 7月  24 14:38 redis-server  # redis服务器</code></pre><h2 id="redis配置"><a href="#redis配置" class="headerlink" title="redis配置"></a>redis配置</h2><p>安装完成之后，会在 redis 文件夹爱中产生一个 <code>redis.conf</code> 配置文件，把它移到 <code>/etc/redis/</code> 中,修改其中内容进行配置。</p>
-<pre><code> $ sudo cp redis.conf /etc/redis</code></pre><p>配置文件中需要注意的如下（修改过后）：</p>
-<pre><code>bind 127.0.0.1                             # 默认绑定ip  
-port 6379                                  # 默认端口
-daemonize yes                              # 是否为守护进程（默认为no）
-logfile &quot;/var/log/redis/redis-server.log&quot;  # 日志文件（需要新建）
-databases 16                               # 默认16个数据库，编号0-15
-dbfilename dump.rdb                        # 数据文件
-dir /var/lib/redis                         # 数据文件存储路径（需要新建）
-slaveof                                    # 主从配置</code></pre><h2 id="redis服务端和客户端的启动"><a href="#redis服务端和客户端的启动" class="headerlink" title="redis服务端和客户端的启动"></a>redis服务端和客户端的启动</h2><p>服务端命令为 <code>redis-server</code>,<code>redis-server --help</code> 可查看帮助文档。<br>启动与关闭服务器如下：</p>
-<pre><code>$ sudo redis-server /etc/redis/redis.conf  # 指定加载的配置文件，启动服务器
-$ ps aux | grep redis                      # 查看进程pid
-$ sudo kill -9 pid                         # 杀死服务器，即关闭</code></pre><p>客户端命令为 <code>redis-cli</code>,<code>redis-cli --help</code> 可查看帮助文档。<br>直接输入 <code>redis-cli</code> 即可连接服务端，输入 <code>ping</code> 起到检查连接的作用。</p>
-<pre><code>$ redis-cli
-127.0.0.1:6379&gt; ping
-PONG</code></pre><p>利用 <code>select</code> 命令切换制定数据库，如：</p>
-<pre><code>select 5</code></pre><h1 id="redis数据操作"><a href="#redis数据操作" class="headerlink" title="redis数据操作"></a>redis数据操作</h1><p><a href="doc.redisfans.com">redis命令大全</a> 很多命令可以去查找</p>
-<p>以下代码有公式形式，匹配例子。</p>
-<h2 id="string类型"><a href="#string类型" class="headerlink" title="string类型"></a>string类型</h2><p>设置的健不存在则添加，存在则修改。</p>
-<ul>
-<li>设置键值<pre><code>  set key value
-  set name itcast</code></pre></li>
-<li>设置键值及过期时间，以秒为单位<pre><code>  setex key seconds value
-  setex aa 3 aa</code></pre></li>
-<li>设置多个键值<pre><code>  mset key1 value1 key2 value2 ...
-  mset a1 python a2 java a3 c</code></pre></li>
-<li>追加值<pre><code>  append key value
-  append a1 haha</code></pre></li>
-<li>根据键获取值，如果不存在则返回 <code>nil</code> <pre><code>  get key
-  get name</code></pre></li>
-<li>获取多个键的值<pre><code>  mget key1 key2 ...
-  mget a1 a2 a3</code></pre><h2 id="键命令"><a href="#键命令" class="headerlink" title="键命令"></a>键命令</h2></li>
-<li>查找键，参数支持正则表达式<pre><code>  keys pattern
-  keys *       # 查看所有键
-  keys ‘a*’    # 包含 a 的键</code></pre></li>
-<li>判断键是否存在，存在返回1，否则返回0<pre><code>  exists key1
-  exists a1</code></pre></li>
-<li>查看对应的值的类型<pre><code>  type key
-  type a1</code></pre></li>
-<li>删除键及对应的值<pre><code>  del key1 key2 ... 
-  del a2 a3</code></pre></li>
-<li>设置过期时间，以秒为单位<pre><code>  expire key seconds
-  expire &#39;a1&#39; 3</code></pre></li>
-<li>查看有效时间<pre><code>  ttl key
-  setex bb 10 bb
-  ttl bb</code></pre></li>
-</ul>
-<h2 id="hash类型"><a href="#hash类型" class="headerlink" title="hash类型"></a>hash类型</h2><p>hash 用于存储对象，对象的结构为属性，值。值的类型为string。</p>
-<ul>
-<li>设置单个属性<pre><code>  hset key field value
-  hset user name itheima
-  # 如果报错，则表示为数据库快照，可执行下面命令使数据持久化
-  config set stop-writes-on-bgsave-error no</code></pre></li>
-<li>设置多个属性<pre><code>  set key field1 value1 field2 value2
-  set u2 name itcast age 11</code></pre></li>
-<li>获取指定键（对象）所有的属性<pre><code>  hkeys key
-  hkeys u2</code></pre></li>
-<li>获取一个属性的值<pre><code>  hget key field
-  hget u2 name</code></pre></li>
-<li>获取多个属性的值<pre><code>  hmget key field1 field2
-  hmget u2 name age</code></pre></li>
-<li>获取所有属性的值<pre><code>  hvals key
-  hvals u2</code></pre></li>
-<li>删除整个hash键及值，使用  <code>del</code> 命令</li>
-<li>删除属性，属性对应的值会被一起删除<pre><code>  hdel key field1 field2 ...
-  hdel u2 age</code></pre></li>
-</ul>
-<h2 id="list类型"><a href="#list类型" class="headerlink" title="list类型"></a>list类型</h2><p>列表的元素类型为 <code>string</code>，按照插入顺序排序。</p>
-<ul>
-<li>在左侧插入数据<pre><code>  lpush key value1 value2 ...
-  lpush a1 a b c</code></pre></li>
-<li>在右侧插入数据<pre><code>  rpush key value1 value2 ...
-  rpush a1 0 1</code></pre></li>
-<li>在指定元素的前或后插入新元素<pre><code>  linsert key before或after 现有元素 新元素
-  linsert a1 before b 3</code></pre></li>
-<li>获取列表里制定范围内的元素<pre><code>  lrange key start stop
-  lrange a1 0 -1</code></pre></li>
-<li>设置指定索引位置的元素值<pre><code>  lset key index value
-  lset a 1 z</code></pre></li>
-<li>删除指定元素<ul>
-<li>将列表中前 count 次出现的值为 value 的元素移除</li>
-<li>count &gt; 0; 从头往后移除</li>
-<li>count &lt; 0; 从后往头移除</li>
-<li>count = 0; 全移除<pre><code>irem key count value</code></pre></li>
-</ul>
+                <p>由于 ubuntu20.04 自带的 python 版本是3.8，太高了，所以再安装 python3.7。</p>
+<p>首先，安装好编译环境。</p>
+<pre><code>sudo apt-get install -y liblzma-dev
+sudo apt-get install -y gcc make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev
+sudo apt-get install zlib1g-dev
+sudo apt install libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev -y
+sudo apt install build-essential -y</code></pre><p>在官网下载安装包，并解压。</p>
+<pre><code>sudo wget https://www.python.org/ftp/python/3.7.1/Python-3.7.1.tgz
+sudo tar -xzvf Python-3.7.1.tgz
+cd Python-3.7.1</code></pre><p>指定安装路径并编译安装，由于这里我安装在了 <code>/opt/</code> 下，所以之后和 python 相关的操作都要加 <code>sudo</code> 。</p>
+<pre><code>sudo ./configure --enable-optimizations --prefix=/opt/python37/ 
+sudo make
+sudo make install</code></pre><p>重点来了，安装完之后，在终端输入 python 还是会运行系统自带的版本，我们需要添加软连接。而在这里网上的教程都是把原来的指向 python3.8 的软连接 python3 清除，再新建软连接，经实测，这样做会导致后边引入包出现各种各样的错误。所以切记：<strong>一定不要动原系统自带的任何东西，不要怕麻烦，python 和 pip 都要新建立软连接</strong>，我这里命名为 python37, pip37，之后畅通无阻，没有任何报错。</p>
+<p>安装完 python 之后，最好去 pypi 下载最新版本的 setuptools 和 pip，再各自的安装包中编译安装，这种方法最为保险，不会报错，另外 pip 建立软连接的问题和上述相同。</p>
+<p>python 的基本工具已经安装完成，最后再安装一个虚拟环境建立工具即可，用 virtualenv 用惯了，这里就介绍它了。</p>
+<p>安装用 pip 安装就好：</p>
+<pre><code>sudo pip37 install virtualenv</code></pre><p>检查是否安装成功：</p>
+<pre><code>virtualenv --version</code></pre><p>建立给定 python 解释器的虚拟环境：</p>
+<pre><code>cd my_project
+virtualenv -p /usr/bin/python37 my_project_env</code></pre><p>启动虚拟环境：</p>
+<pre><code>source my_project_env/bin/activate</code></pre><p>停止当前虚拟环境：</p>
+<pre><code>deactivate</code></pre><p>顺便以 python 为例，记录一下修改环境变量的方法。</p>
+<ol>
+<li><p>方法一：</p>
+<pre><code> export PATH=/opt/python37/bin:$PATH
+ echo $PATH  # 查看配置结果</code></pre><p> <strong>生效方法</strong>：立即生效</p>
+<p> <strong>有效期限</strong>：临时改变，只能在当前的终端窗口中有效，当前窗口关闭后就会恢复原有的path配置</p>
+<p> <strong>用户局限</strong>：仅对当前用户</p>
 </li>
-</ul>
-<h2 id="set类型"><a href="#set类型" class="headerlink" title="set类型"></a>set类型</h2><p>无序集合，元素为 string 类型， 唯一性，不重复。对于集合没有修改操作。</p>
-<ul>
-<li>添加元素<pre><code>  sadd key member1 member2 ...
-  sadd a3 zhangsan sili wangwu</code></pre></li>
-<li>返回所有元素<pre><code>  smembers key
-  smember a3</code></pre></li>
-<li>删除指定元素<pre><code>  srem key memebr1
-  srem a3 wangwu</code></pre></li>
-</ul>
-<h2 id="zset类型"><a href="#zset类型" class="headerlink" title="zset类型"></a>zset类型</h2><p>有序集合，元素为 string 类型， 唯一性，不重复。每个元素都会关联一个double类型的score，表示权重。通过权重将元素从小到大排序，和 set 一样没有修改操作。</p>
-<ul>
-<li>添加元素<pre><code>  zadd key score1 member1 score2 member2 ...
-  sadd a4 4 lisi 5 wangwu 6 zhaoliu 3 zhangsan</code></pre></li>
-<li>返回指定范围内元素<pre><code>  zrange keyy start stop
-  zrange a4 0 -1</code></pre></li>
-<li>返回 score 值在 min 和 max 之间的元素（闭区间）<pre><code>  zrangebyscore key min max
-  zrangebyscore a4 5 6</code></pre></li>
-<li>查看某 member 的 score 值<pre><code>  zscore key member
-  zscore a4 zhangsan</code></pre></li>
-<li>萨和年初指定元素<pre><code>  zrem key member1 member2 ...
-  zrem a4 zhangsan</code></pre></li>
-<li>删除 score 值在 min 和 max 之间的元素（闭区间）<ul>
-<li>将列表中前 count 次出现的值为 value 的元素移除</li>
-<li>count &gt; 0; 从头往后移除</li>
-<li>count &lt; 0; 从后往头移除</li>
-<li>count = 0; 全移除<pre><code>zremrangebyscore key min max
-zremrangebyscore a4 5 6</code></pre></li>
-</ul>
+</ol>
+<ol start="2">
+<li><p>方法二：<br> 修改 .bashrc 文件:</p>
+<pre><code> vim ~/.bashrc</code></pre><p> 在最后一行添上：<code>export PATH=/opt/python37/bin:$PATH</code></p>
+<p> <strong>生效方法</strong>：（有以下两种）</p>
+<p> (1) 关闭当前终端窗口，重新打开一个新终端窗口就能生效</p>
+<p> (2) 输入“source ~/.bashrc”命令，立即生效</p>
+<p> <strong>有效期限</strong>：永久有效</p>
+<p> <strong>用户局限</strong>：仅对当前用户</p>
 </li>
-</ul>
-<h1 id="redis与python的交互"><a href="#redis与python的交互" class="headerlink" title="redis与python的交互"></a>redis与python的交互</h1><p><a href="python.jobbole.com">redis.py参考文档</a></p>
-<p>StrictRedis 对象方法能操作 string 类型</p>
-<pre><code>sr = StrictRedis(host = &#39;localhost&#39;, port = 6379, db = 0)
-# 上述都为默认值，可简写
-sr = StrictRedis()</code></pre><p>根据不同的类型，拥有不同的实例方法可以调用，与前面的 redis 命令对应，方法的参数与命令的参数也一致。</p>
+</ol>
+<ol start="3">
+<li><p>方法三:<br> 通过修改 profile 文件:</p>
+<pre><code> vim /etc/profile</code></pre><p> 在最后一行添上：<code>export PATH=/opt/python37/bin:$PATH</code></p>
+<p> <strong>生效方法</strong>：系统重启</p>
+<p> <strong>有效期限</strong>：永久有效</p>
+<p> <strong>用户局限</strong>：对所有用户</p>
+</li>
+</ol>
 
             </div>
             <hr/>
@@ -622,7 +535,7 @@ sr = StrictRedis()</code></pre><p>根据不同的类型，拥有不同的实例�
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://qayqaq.github.io/2020/07/24/redis-shu-ju-ku-ji-ben-cao-zuo/">http://qayqaq.github.io/2020/07/24/redis-shu-ju-ku-ji-ben-cao-zuo/</a>
+                    <a href="http://qayqaq.github.io/2020/07/26/ubuntu-an-zhuang-python/">http://qayqaq.github.io/2020/07/26/ubuntu-an-zhuang-python/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -660,8 +573,8 @@ sr = StrictRedis()</code></pre><p>根据不同的类型，拥有不同的实例�
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/redis/">
-                                    <span class="chip bg-color">redis</span>
+                                <a href="/tags/python/">
+                                    <span class="chip bg-color">python</span>
                                 </a>
                             
                         </div>
@@ -829,9 +742,10 @@ sr = StrictRedis()</code></pre><p>根据不同的类型，拥有不同的实例�
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2020/07/26/ubuntu-an-zhuang-python/">
                     <div class="card-image">
@@ -852,9 +766,9 @@ sudo apt-get insta
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-07-26
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-26
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -863,6 +777,7 @@ sudo apt-get insta
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -881,23 +796,22 @@ sudo apt-get insta
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/07/24/win10-ubuntu20-04-shuang-xi-tong-da-jian-guo-cheng/">
+                <a href="/2020/07/24/redis-shu-ju-ku-ji-ben-cao-zuo/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Win10+Ubuntu20.04双系统搭建过程">
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="redis数据库基本操作">
                         
-                        <span class="card-title">Win10+Ubuntu20.04双系统搭建过程</span>
+                        <span class="card-title">redis数据库基本操作</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            鬼知道我这两天重启了多少次电脑，那个小洞都快被我插烂了。。。
-
-因为有需求要用Ubuntu系统，之前用虚拟机实在是太卡了，索性下定决心装上双系统，总共用了将近2天时间才搞定，下面记录一下装机过程。（要是放图就太多了，不放了，步骤很详细）
-
-
+                            redis下载安装依次执行以下命令：
+$ wget http://download.redis.io/releases/redis-3.2.8.tar.gz
+$ tar -zxvf redis-3.2.8.tar.gz
+$ sudo mv 
                         
                     </div>
                     <div class="publish-info">
@@ -915,8 +829,8 @@ sudo apt-get insta
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E5%8F%8C%E7%B3%BB%E7%BB%9F%EF%BC%8CUbuntu/">
-                        <span class="chip bg-color">双系统，Ubuntu</span>
+                    <a href="/tags/redis/">
+                        <span class="chip bg-color">redis</span>
                     </a>
                     
                 </div>
