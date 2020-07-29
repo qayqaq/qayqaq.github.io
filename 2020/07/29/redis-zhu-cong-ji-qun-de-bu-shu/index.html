@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="ubuntu安装python, QayQaq">
+    <meta name="keywords" content="redis主从集群的部署, QayQaq">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>ubuntu安装python | QayQaq</title>
+    <title>redis主从集群的部署 | QayQaq</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -308,12 +308,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">ubuntu安装python</h1>
+                    <h1 class="description center-align post-title">redis主从集群的部署</h1>
                 </div>
             </div>
         </div>
@@ -430,8 +430,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/python%EF%BC%8C%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/">
-                                <span class="chip bg-color">python，环境变量</span>
+                            <a href="/tags/redis-%E9%9B%86%E7%BE%A4/">
+                                <span class="chip bg-color">redis, 集群</span>
                             </a>
                         
                     </div>
@@ -446,7 +446,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-07-26
+                    2020-07-29
                 </div>
                 
 
@@ -462,54 +462,55 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>由于 ubuntu20.04 自带的 python 版本是3.8，太高了，所以再安装 python3.7。</p>
-<p>首先，安装好编译环境。</p>
-<pre><code>sudo apt-get install -y liblzma-dev
-sudo apt-get install -y gcc make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev
-sudo apt-get install zlib1g-dev
-sudo apt install libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev -y
-sudo apt install build-essential -y</code></pre><p>在官网下载安装包，并解压。</p>
-<pre><code>sudo wget https://www.python.org/ftp/python/3.7.1/Python-3.7.1.tgz
-sudo tar -xzvf Python-3.7.1.tgz
-cd Python-3.7.1</code></pre><p>指定安装路径并编译安装，由于这里我安装在了 <code>/opt/</code> 下，所以之后和 python 相关的操作都要加 <code>sudo</code> 。</p>
-<pre><code>sudo ./configure --enable-optimizations --prefix=/opt/python37/ 
-sudo make
-sudo make install</code></pre><p>重点来了，安装完之后，在终端输入 python 还是会运行系统自带的版本，我们需要添加软连接。而在这里网上的教程都是把原来的指向 python3.8 的软连接 python3 清除，再新建软连接，经实测，这样做会导致后边引入包出现各种各样的错误。所以切记：<strong>一定不要动原系统自带的任何东西，不要怕麻烦，python 和 pip 都要新建立软连接</strong>，我这里命名为 python37, pip37，之后畅通无阻，没有任何报错。</p>
-<p>安装完 python 之后，最好去 pypi 下载最新版本的 setuptools 和 pip，再各自的安装包中编译安装，这种方法最为保险，不会报错，另外 pip 建立软连接的问题和上述相同。</p>
-<p>python 的基本工具已经安装完成，最后再安装一个虚拟环境建立工具即可，用 virtualenv 用惯了，这里就介绍它了。</p>
-<p>安装用 pip 安装就好：</p>
-<pre><code>sudo pip37 install virtualenv</code></pre><p>检查是否安装成功：</p>
-<pre><code>virtualenv --version</code></pre><p>建立给定 python 解释器的虚拟环境：</p>
-<pre><code>cd my_project
-virtualenv -p /usr/bin/python37 my_project_env</code></pre><p>启动虚拟环境：</p>
-<pre><code>source my_project_env/bin/activate</code></pre><p>停止当前虚拟环境：</p>
-<pre><code>deactivate</code></pre><p>顺便以 python 为例，记录一下修改环境变量的方法。</p>
-<ol>
-<li><p>方法一：</p>
-<pre><code> export PATH=/opt/python37/bin:$PATH
- echo $PATH  # 查看配置结果</code></pre><p> <strong>生效方法</strong>：立即生效</p>
-<p> <strong>有效期限</strong>：临时改变，只能在当前的终端窗口中有效，当前窗口关闭后就会恢复原有的path配置</p>
-<p> <strong>用户局限</strong>：仅对当前用户</p>
-</li>
-</ol>
-<ol start="2">
-<li><p>方法二：<br> 修改 .bashrc 文件:</p>
-<pre><code> vim ~/.bashrc</code></pre><p> 在最后一行添上：<code>export PATH=/opt/python37/bin:$PATH</code></p>
-<p> <strong>生效方法</strong>：（有以下两种）</p>
-<p> (1) 关闭当前终端窗口，重新打开一个新终端窗口就能生效</p>
-<p> (2) 输入“source ~/.bashrc”命令，立即生效</p>
-<p> <strong>有效期限</strong>：永久有效</p>
-<p> <strong>用户局限</strong>：仅对当前用户</p>
-</li>
-</ol>
-<ol start="3">
-<li><p>方法三:<br> 通过修改 profile 文件:</p>
-<pre><code> vim /etc/profile</code></pre><p> 在最后一行添上：<code>export PATH=/opt/python37/bin:$PATH</code></p>
-<p> <strong>生效方法</strong>：系统重启</p>
-<p> <strong>有效期限</strong>：永久有效</p>
-<p> <strong>用户局限</strong>：对所有用户</p>
-</li>
-</ol>
+                <h2 id="主从配置"><a href="#主从配置" class="headerlink" title="主从配置"></a>主从配置</h2><p>主从，直观来说就是备份，当一个 redis 服务挂掉时，为了防止数据丢失或者不能使用，有一个副本来代替原来的服务。</p>
+<h3 id="配置主"><a href="#配置主" class="headerlink" title="配置主"></a>配置主</h3><ul>
+<li>查看当前主机 ip 地址 <code>ifconfig</code></li>
+<li>修改 redis.conf 中的 bind <code>bind 192.168.xx.xx</code></li>
+<li>重启 redis 服务 <code>redis-server redis.conf</code></li>
+</ul>
+<h3 id="配置从"><a href="#配置从" class="headerlink" title="配置从"></a>配置从</h3><ul>
+<li>复制 redis.conf <code>sudo cp redis.conf ./slave.conf</code></li>
+<li>修改 slave.conf 文件 <code>sudo vim slave.conf</code></li>
+<li>编辑如下内容，注意端口号不能和主重复<pre><code>  bind 192.168.xx.xx
+  slaveof 192.168.xx.xx 6379  # 这是额外添加的一项
+  port 6378</code></pre></li>
+<li>启动从服务 <code>sudo redis-server save.conf</code></li>
+<li>查看主从关系 <code>redis-cli -h 192.168.xx.xx info Replication</code></li>
+</ul>
+<h3 id="主从配置下数据操作"><a href="#主从配置下数据操作" class="headerlink" title="主从配置下数据操作"></a>主从配置下数据操作</h3><p>与正常基本没有区别。</p>
+<p>在主和从分别执行 info 命令查看输出信息后，进入主客户端，写数据；这时进入从客户端就可以读数据了。</p>
+<h2 id="集群配置"><a href="#集群配置" class="headerlink" title="集群配置"></a>集群配置</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>集群，直观来讲就是好多 redis 服务作为一个整体对外工作，人多力量大。</p>
+<p>集群分为两种，一种是软件集群，即只有一台电脑上面开启了很多 redis 服务，将这些服务集群；另一种是硬件集群，即有很多电脑，每台电脑上都有一个或很多 redis 服务，将所有服务集群。</p>
+<p>集群中的主节点负责处理槽（存储数据），从节点则是主节点的复制品；</p>
+<p>Redis集群将整个数据库分成16384个槽，数据库中的每个键都属于16384个槽中的其中一个；</p>
+<p>集群中的每个主节点都可以负责0到16384个槽，当16384个槽都有节点在负责时，集群进入上线状态，可以执行客户端发送的数据命令；</p>
+<p>可以在 conf 文件中更改槽的总数。</p>
+<h3 id="创建集群"><a href="#创建集群" class="headerlink" title="创建集群"></a>创建集群</h3><p>试验时，在本机上开启6个服务做集群。</p>
+<ul>
+<li>创建 conf 目录</li>
+<li>在 conf 目录下创建 7000.conf，编辑内容如下：<pre><code>  port 7000
+  bind 192.168.xx.xx
+  daemonize yes  # 作为守护进程运行
+  pidfile 7000.pid  # 运行后进程 id 写入这里
+  cluster-enabled yes  # 可以作为集群的节点
+  cluster-config-file 7000_node.conf  # 集群节点的配置文件
+  cluster-node-timeout 15000  # 连接集群节点的超时时间
+  appendonly yes  # 数据文件可追加</code></pre></li>
+<li>同理创建7001，7002，7003，7004，7005</li>
+<li>开启6个服务</li>
+<li>用 redis-trib.rb 命令就可以创建集群，命令在源码包的 src 下，可以通过 cp 复制到 /usr/local/bin<pre><code>  redis-trib.rb create --replicas 1 192.168.101.145:7000 192.168.101.145:7001 192.168.101.145:7002 192.168.101.145:7003 192.168.101.145:7004 192.168.101.145:7005</code></pre></li>
+</ul>
+<p>如果没有报错，则说明集群建立成功了。</p>
+<p>如果报错了。说明 ruby 的最新版本，按照如下方法解决。</p>
+<pre><code>$ gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+$ curl -sSL https://get.rvm.io | bash -s stable
+$ source ~/.bashrc
+$ source ~/.bash_profile
+$ rvm list known
+$ rvm install 2.7.1 --disable-binary
+$ rvm use 2.7.1 --default
+$ rvm list
+$ gem install redis  # 最后安装 redis 集群接口</code></pre><p>执行完以上代码之后，再执行 redis-trib.rb 就可以了建立集群了。</p>
 
             </div>
             <hr/>
@@ -535,7 +536,7 @@ virtualenv -p /usr/bin/python37 my_project_env</code></pre><p>启动虚拟环境
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://qayqaq.github.io/2020/07/26/ubuntu-an-zhuang-python/">http://qayqaq.github.io/2020/07/26/ubuntu-an-zhuang-python/</a>
+                    <a href="http://qayqaq.github.io/2020/07/29/redis-zhu-cong-ji-qun-de-bu-shu/">http://qayqaq.github.io/2020/07/29/redis-zhu-cong-ji-qun-de-bu-shu/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -573,8 +574,8 @@ virtualenv -p /usr/bin/python37 my_project_env</code></pre><p>启动虚拟环境
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/python%EF%BC%8C%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/">
-                                    <span class="chip bg-color">python，环境变量</span>
+                                <a href="/tags/redis-%E9%9B%86%E7%BE%A4/">
+                                    <span class="chip bg-color">redis, 集群</span>
                                 </a>
                             
                         </div>
@@ -742,9 +743,10 @@ virtualenv -p /usr/bin/python37 my_project_env</code></pre><p>启动虚拟环境
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2020/07/29/redis-zhu-cong-ji-qun-de-bu-shu/">
                     <div class="card-image">
@@ -765,9 +767,9 @@ virtualenv -p /usr/bin/python37 my_project_env</code></pre><p>启动虚拟环境
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-07-29
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-29
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -776,6 +778,7 @@ virtualenv -p /usr/bin/python37 my_project_env</code></pre><p>启动虚拟环境
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -794,27 +797,27 @@ virtualenv -p /usr/bin/python37 my_project_env</code></pre><p>启动虚拟环境
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/07/24/redis-shu-ju-ku-ji-ben-cao-zuo/">
+                <a href="/2020/07/26/ubuntu-an-zhuang-python/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="redis数据库基本操作">
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="ubuntu安装python">
                         
-                        <span class="card-title">redis数据库基本操作</span>
+                        <span class="card-title">ubuntu安装python</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            redis下载安装依次执行以下命令：
-$ wget http://download.redis.io/releases/redis-3.2.8.tar.gz
-$ tar -zxvf redis-3.2.8.tar.gz
-$ sudo mv 
+                            由于 ubuntu20.04 自带的 python 版本是3.8，太高了，所以再安装 python3.7。
+首先，安装好编译环境。
+sudo apt-get install -y liblzma-dev
+sudo apt-get insta
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-24
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-26
                             </span>
                         <span class="publish-author">
                             
@@ -827,8 +830,8 @@ $ sudo mv
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/redis/">
-                        <span class="chip bg-color">redis</span>
+                    <a href="/tags/python%EF%BC%8C%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/">
+                        <span class="chip bg-color">python，环境变量</span>
                     </a>
                     
                 </div>

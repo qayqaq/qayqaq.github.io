@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>redis主从集群的部署</title>
+      <link href="/2020/07/29/redis-zhu-cong-ji-qun-de-bu-shu/"/>
+      <url>/2020/07/29/redis-zhu-cong-ji-qun-de-bu-shu/</url>
+      
+        <content type="html"><![CDATA[<h2 id="主从配置"><a href="#主从配置" class="headerlink" title="主从配置"></a>主从配置</h2><p>主从，直观来说就是备份，当一个 redis 服务挂掉时，为了防止数据丢失或者不能使用，有一个副本来代替原来的服务。</p><h3 id="配置主"><a href="#配置主" class="headerlink" title="配置主"></a>配置主</h3><ul><li>查看当前主机 ip 地址 <code>ifconfig</code></li><li>修改 redis.conf 中的 bind <code>bind 192.168.xx.xx</code></li><li>重启 redis 服务 <code>redis-server redis.conf</code></li></ul><h3 id="配置从"><a href="#配置从" class="headerlink" title="配置从"></a>配置从</h3><ul><li>复制 redis.conf <code>sudo cp redis.conf ./slave.conf</code></li><li>修改 slave.conf 文件 <code>sudo vim slave.conf</code></li><li>编辑如下内容，注意端口号不能和主重复<pre><code>  bind 192.168.xx.xx  slaveof 192.168.xx.xx 6379  # 这是额外添加的一项  port 6378</code></pre></li><li>启动从服务 <code>sudo redis-server save.conf</code></li><li>查看主从关系 <code>redis-cli -h 192.168.xx.xx info Replication</code></li></ul><h3 id="主从配置下数据操作"><a href="#主从配置下数据操作" class="headerlink" title="主从配置下数据操作"></a>主从配置下数据操作</h3><p>与正常基本没有区别。</p><p>在主和从分别执行 info 命令查看输出信息后，进入主客户端，写数据；这时进入从客户端就可以读数据了。</p><h2 id="集群配置"><a href="#集群配置" class="headerlink" title="集群配置"></a>集群配置</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>集群，直观来讲就是好多 redis 服务作为一个整体对外工作，人多力量大。</p><p>集群分为两种，一种是软件集群，即只有一台电脑上面开启了很多 redis 服务，将这些服务集群；另一种是硬件集群，即有很多电脑，每台电脑上都有一个或很多 redis 服务，将所有服务集群。</p><p>集群中的主节点负责处理槽（存储数据），从节点则是主节点的复制品；</p><p>Redis集群将整个数据库分成16384个槽，数据库中的每个键都属于16384个槽中的其中一个；</p><p>集群中的每个主节点都可以负责0到16384个槽，当16384个槽都有节点在负责时，集群进入上线状态，可以执行客户端发送的数据命令；</p><p>可以在 conf 文件中更改槽的总数。</p><h3 id="创建集群"><a href="#创建集群" class="headerlink" title="创建集群"></a>创建集群</h3><p>试验时，在本机上开启6个服务做集群。</p><ul><li>创建 conf 目录</li><li>在 conf 目录下创建 7000.conf，编辑内容如下：<pre><code>  port 7000  bind 192.168.xx.xx  daemonize yes  # 作为守护进程运行  pidfile 7000.pid  # 运行后进程 id 写入这里  cluster-enabled yes  # 可以作为集群的节点  cluster-config-file 7000_node.conf  # 集群节点的配置文件  cluster-node-timeout 15000  # 连接集群节点的超时时间  appendonly yes  # 数据文件可追加</code></pre></li><li>同理创建7001，7002，7003，7004，7005</li><li>开启6个服务</li><li>用 redis-trib.rb 命令就可以创建集群，命令在源码包的 src 下，可以通过 cp 复制到 /usr/local/bin<pre><code>  redis-trib.rb create --replicas 1 192.168.101.145:7000 192.168.101.145:7001 192.168.101.145:7002 192.168.101.145:7003 192.168.101.145:7004 192.168.101.145:7005</code></pre></li></ul><p>如果没有报错，则说明集群建立成功了。</p><p>如果报错了。说明 ruby 的最新版本，按照如下方法解决。</p><pre><code>$ gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB$ curl -sSL https://get.rvm.io | bash -s stable$ source ~/.bashrc$ source ~/.bash_profile$ rvm list known$ rvm install 2.7.1 --disable-binary$ rvm use 2.7.1 --default$ rvm list$ gem install redis  # 最后安装 redis 集群接口</code></pre><p>执行完以上代码之后，再执行 redis-trib.rb 就可以了建立集群了。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> redis, 集群 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>ubuntu安装python</title>
       <link href="/2020/07/26/ubuntu-an-zhuang-python/"/>
       <url>/2020/07/26/ubuntu-an-zhuang-python/</url>
