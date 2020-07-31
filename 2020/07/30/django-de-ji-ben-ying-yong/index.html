@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="redis主从集群的部署, QayQaq">
+    <meta name="keywords" content="django的基本应用, QayQaq">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>redis主从集群的部署 | QayQaq</title>
+    <title>django的基本应用 | QayQaq</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -308,12 +308,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">redis主从集群的部署</h1>
+                    <h1 class="description center-align post-title">django的基本应用</h1>
                 </div>
             </div>
         </div>
@@ -430,8 +430,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/redis-%E9%9B%86%E7%BE%A4/">
-                                <span class="chip bg-color">redis, 集群</span>
+                            <a href="/tags/django/">
+                                <span class="chip bg-color">django</span>
                             </a>
                         
                     </div>
@@ -446,7 +446,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-07-29
+                    2020-07-30
                 </div>
                 
 
@@ -462,55 +462,224 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="主从配置"><a href="#主从配置" class="headerlink" title="主从配置"></a>主从配置</h2><p>主从，直观来说就是备份，当一个 redis 服务挂掉时，为了防止数据丢失或者不能使用，有一个副本来代替原来的服务。</p>
-<h3 id="配置主"><a href="#配置主" class="headerlink" title="配置主"></a>配置主</h3><ul>
-<li>查看当前主机 ip 地址 <code>ifconfig</code></li>
-<li>修改 redis.conf 中的 bind <code>bind 192.168.xx.xx</code></li>
-<li>重启 redis 服务 <code>redis-server redis.conf</code></li>
+                <h2 id="项目与应用创建"><a href="#项目与应用创建" class="headerlink" title="项目与应用创建"></a>项目与应用创建</h2><pre><code>django-admin startproject test1  # 创建 test1 项目
+python37 manage.py startapp booktest  # 创建 booktest 应用</code></pre><ul>
+<li>项目目录结构<ol>
+<li><code>__init__.py</code> 说明是一个 python 包；</li>
+<li><code>settings.py</code> 项目的配置文件；</li>
+<li><code>urls.py</code> 进行 url 路由的配置；</li>
+<li><code>wsgi.py</code> web 服务器和 Django 交互的入口</li>
+<li><code>manage.py</code> 项目的管理文件。</li>
+</ol>
+</li>
+<li>应用目录结构<ol>
+<li><code>__init__.py</code> 说明是一个 python 包；</li>
+<li><code>model.py</code> 写和数据库相关的功能；</li>
+<li><code>views.py</code> 接受请求，进行处理，与 M 和 T 进行交互，返回应答，定义处理函数，称为视图函数；</li>
+<li><code>test.py</code> 写测试代码的文件；</li>
+<li><code>admin.py</code> 网站后台管理相关的文件</li>
+</ol>
+</li>
 </ul>
-<h3 id="配置从"><a href="#配置从" class="headerlink" title="配置从"></a>配置从</h3><ul>
-<li>复制 redis.conf <code>sudo cp redis.conf ./slave.conf</code></li>
-<li>修改 slave.conf 文件 <code>sudo vim slave.conf</code></li>
-<li>编辑如下内容，注意端口号不能和主重复<pre><code>  bind 192.168.xx.xx
-  slaveof 192.168.xx.xx 6379  # 这是额外添加的一项
-  port 6378</code></pre></li>
-<li>启动从服务 <code>sudo redis-server save.conf</code></li>
-<li>查看主从关系 <code>redis-cli -h 192.168.xx.xx info Replication</code></li>
+<p>还需要建立应用与项目之间的联系，需要对应用进行注册。<br>修改<code>settings.py</code>中的 INSTALLED_APPS 配置项，加入自己的应用名称即可。</p>
+<pre><code>INSTALLED_APPS = (
+    &#39;django.contrib.admin&#39;,
+    &#39;django.contrib.auth&#39;,
+    &#39;django.contrib.contenttypes&#39;,
+    &#39;django.contrib.sessions&#39;,
+    &#39;django.contrib.messages&#39;,
+    &#39;django.contrib.staticfiles&#39;,
+    &#39;booktest&#39;,  # 注册应用
+)</code></pre><h2 id="配置-mysql-数据库"><a href="#配置-mysql-数据库" class="headerlink" title="配置 mysql 数据库"></a>配置 mysql 数据库</h2><p>Django 自带的数据库是 sqlite 相对小型，在大项目中用的更多的是 oracle 和 mysql，所以要替换。</p>
+<p>模型是对数据库的相关操作，利用 Django 配置 mysql 数据库，需要修改<code>settings.py</code>中的 DATABASE。</p>
+<pre><code>DATABASES = {
+    &#39;default&#39;: {
+        # &#39;ENGINE&#39;: &#39;django.db.backends.sqlite3&#39;,
+        &#39;ENGINE&#39;: &#39;django.db.backends.mysql&#39;,  
+        # &#39;NAME&#39;: os.path.join(BASE_DIR, &#39;db.sqlite3&#39;),
+        &#39;NAME&#39;: &#39;qay&#39;,            # 数据库名称
+        &#39;USER&#39;: &#39;root&#39;,           # 登陆数据库的用户名
+        &#39;PASSWORD&#39;: &#39;qin200053&#39;,  # 登陆密码
+        &#39;HOST&#39;: &#39;localhost&#39;,      # 登陆地址
+        &#39;PORT&#39;: &#39;3306&#39;,           # 端口号，mysql默认端口号是3306
+    }
+}</code></pre><p>注意：django不会生成数据库，需要我们自己创建。</p>
+<p>我的 Ubuntu 版本是20.04，mysql官网上只有8.0才支持20.04，于是我直接安装的 mariadb 暂时作为 mysql 的替代品，目前看来命令没什么区别，希望以后不会出什么bug。</p>
+<pre><code>sudo apt-get mariadb-server mariadb-client  # 安装</code></pre><ul>
+<li>开启关闭服务，登陆退出。<pre><code>  sercive mysql start
+  service mysql stop
+  sudo mysql -uroot </code></pre></li>
+<li>避免使用 sudo 登陆,需要执行<code>sudo vim /etc/mysql/my.cnf</code>，然后添加如下语句，再重启服务即可。<pre><code>  [mysqld]
+  skip-grant-tables</code></pre></li>
+<li>修改mysql密码。<pre><code>  mysql -uroot -p
+  use mysql 
+  update user set authentication_string=password(&#39;xxxxxx&#39;) where User=&#39;root&#39;;</code></pre></li>
+<li>创建新的数据库<pre><code>  mysql -uroot -p
+  show databases;
+  create database qay charset=utf8;
+  show databases; </code></pre></li>
 </ul>
-<h3 id="主从配置下数据操作"><a href="#主从配置下数据操作" class="headerlink" title="主从配置下数据操作"></a>主从配置下数据操作</h3><p>与正常基本没有区别。</p>
-<p>在主和从分别执行 info 命令查看输出信息后，进入主客户端，写数据；这时进入从客户端就可以读数据了。</p>
-<h2 id="集群配置"><a href="#集群配置" class="headerlink" title="集群配置"></a>集群配置</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>集群，直观来讲就是好多 redis 服务作为一个整体对外工作，人多力量大。</p>
-<p>集群分为两种，一种是软件集群，即只有一台电脑上面开启了很多 redis 服务，将这些服务集群；另一种是硬件集群，即有很多电脑，每台电脑上都有一个或很多 redis 服务，将所有服务集群。</p>
-<p>集群中的主节点负责处理槽（存储数据），从节点则是主节点的复制品；</p>
-<p>Redis集群将整个数据库分成16384个槽，数据库中的每个键都属于16384个槽中的其中一个；</p>
-<p>集群中的每个主节点都可以负责0到16384个槽，当16384个槽都有节点在负责时，集群进入上线状态，可以执行客户端发送的数据命令；</p>
-<p>可以在 conf 文件中更改槽的总数。</p>
-<h3 id="创建集群"><a href="#创建集群" class="headerlink" title="创建集群"></a>创建集群</h3><p>试验时，在本机上开启6个服务做集群。</p>
+<p>处理完 mysql，在启动项目之前，需要<code>sudo pip37 install pymysql</code>，并在项目的<code>__init__.py</code>中加入如下语句，就可以了。</p>
+<pre><code>import pymysql
+pymysql.install_as_MySQLdb()</code></pre><h2 id="模型类"><a href="#模型类" class="headerlink" title="模型类"></a>模型类</h2><p>我们需要设计和数据库中表相对应的类，称为模型类，本质上就是在<code>models.py</code>中建立 class，其必须继承于 models.Model类。</p>
+<pre><code>class BookInfo(models.Model):
+    &#39;&#39;&#39;图书模型类&#39;&#39;&#39;
+    # 图书名称，字符串，最长20
+    btitle = models.CharField(max_length=20)
+    # 出版日期，日期类型
+    bupdate = models.DateField()</code></pre><p>设计完模型类之后，将其生成为数据库中的表：</p>
 <ul>
-<li>创建 conf 目录</li>
-<li>在 conf 目录下创建 7000.conf，编辑内容如下：<pre><code>  port 7000
-  bind 192.168.xx.xx
-  daemonize yes  # 作为守护进程运行
-  pidfile 7000.pid  # 运行后进程 id 写入这里
-  cluster-enabled yes  # 可以作为集群的节点
-  cluster-config-file 7000_node.conf  # 集群节点的配置文件
-  cluster-node-timeout 15000  # 连接集群节点的超时时间
-  appendonly yes  # 数据文件可追加</code></pre></li>
-<li>同理创建7001，7002，7003，7004，7005</li>
-<li>开启6个服务</li>
-<li>用 redis-trib.rb 命令就可以创建集群，命令在源码包的 src 下，可以通过 cp 复制到 /usr/local/bin<pre><code>  redis-trib.rb create --replicas 1 192.168.101.145:7000 192.168.101.145:7001 192.168.101.145:7002 192.168.101.145:7003 192.168.101.145:7004 192.168.101.145:7005</code></pre></li>
+<li><p>生成迁移文件<code>python37 manage.py makemigrations</code>，文件生成在 migrations 文件夹中；</p>
+</li>
+<li><p>执行迁移生成表<code>python37 manage.py migrate</code>，这样去数据库里就能查看到了，创建的表名即为<code>应用名_类名</code>。</p>
+</li>
+<li><p>接下来就可以通过python语句，对数据进行操作了，利用 <code>python37 manage.py shell</code>进行操作：</p>
+<pre><code>  &gt;&gt;&gt; from booktest.models import BookInfo
+  &gt;&gt;&gt; b = BookInfo()
+  &gt;&gt;&gt; b.btitle = &#39;三体&#39;
+  &gt;&gt;&gt; from datetime import date
+  &gt;&gt;&gt; b.bupdate = date(1990,1,1)
+  &gt;&gt;&gt; b.save()  # 通过 save 进行插入和修改
+  &gt;&gt;&gt; b_all = BookInfo.objects.all()   # 拿到所有实例，即表中所有条目，返回一个列表
+  &gt;&gt;&gt; b2 = BookInfo.objects.get(id=1)  # 拿到实例，可以借此查询
+  &gt;&gt;&gt; b_cond = BookInfo.objects.get(btitle=&#39;三体&#39;)  # 按条件查询
+  &gt;&gt;&gt; type(b2)
+  &lt;class &#39;booktest.models.BookInfo&#39;&gt;
+  &gt;&gt;&gt; b2.btitle
+  &#39;三体&#39;
+  &gt;&gt;&gt; b2.bupdate
+  datetime.date(1990,1,1)
+  &gt;&gt;&gt; b2.delete()  # 通过 delete 删除</code></pre></li>
 </ul>
-<p>如果没有报错，则说明集群建立成功了。</p>
-<p>如果报错了。说明 ruby 的最新版本，按照如下方法解决。</p>
-<pre><code>$ gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-$ curl -sSL https://get.rvm.io | bash -s stable
-$ source ~/.bashrc
-$ source ~/.bash_profile
-$ rvm list known
-$ rvm install 2.7.1 --disable-binary
-$ rvm use 2.7.1 --default
-$ rvm list
-$ gem install redis  # 最后安装 redis 集群接口</code></pre><p>执行完以上代码之后，再执行 redis-trib.rb 就可以了建立集群了。</p>
+<pre><code>class HeroInfo(models.Model):
+    hname = models.CharField(max_length=20)
+    hgender = models.BooleanField(default=False)
+    hcomment = models.CharField(max_length=128)
+    # 关系属性 hbook，建立图书类和英雄人物类之间的一对多关系
+    hbook = models.ForeignKey(&#39;BookInfo&#39;)</code></pre><p>表之间存在关系。</p>
+<ul>
+<li><p>Models.ForeignKey 可以建立两个模型之间一对多的关系，django 在生成表的时候，就会在多的表中创建一列作为外键，建立两个表之间一对多的关系。关系属性对应的表的字段名格式为<code>关系属性名_id</code>。</p>
+<p>  以上面的类作为例子，很多英雄可能都属于一本书，所以在‘多类’中添加关系属性，赋值时要赋‘一类’的实例，在实际的表中，<code>h</code>的属性<code>hbook_id</code>的值即为<code>b</code>的主键<code>id</code>值：</p>
+<pre><code>  b = BookInfo()
+  h = HeroInfo()
+  h.hbook = b</code></pre></li>
+<li><p>建立了关系之后，可以根据关系查询：</p>
+<p>  由一查多：<code>b.heroinfo_set.all()</code><br>  由多查一：<code>h.hbook</code></p>
+</li>
+</ul>
+<h2 id="后台管理"><a href="#后台管理" class="headerlink" title="后台管理"></a>后台管理</h2><ul>
+<li><p>修改<code>settings.py</code>，语言和时区本地化</p>
+<pre><code>  LANGUAGE_CODE = &#39;zh_hans&#39;
+  TIME_ZONE = &#39;Asia/Shanghai&#39;</code></pre></li>
+<li><p>创建管理员</p>
+<pre><code>  python37 manage.py createsuperuser</code></pre></li>
+<li><p>在<code>admin.py</code>中注册模型类</p>
+<pre><code>  admin.site.register(BookInfo)
+  admin.site.register(HeroInfo)</code></pre></li>
+<li><p>启动项目后在浏览器输入<code>http://127.0.0.1:8000/admnin</code></p>
+</li>
+<li><p>自定义管理页面，在 admin 中建立自定义管理类</p>
+<pre><code>  class BookInfoAdmin(admin.ModelAdmin):
+      list_display = [&#39;id&#39;,&#39;btitle&#39;,&#39;bupdate&#39;]
+
+  admin.site.register(BookInfo, BookInfoAdmin)</code></pre></li>
+</ul>
+<h2 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h2><p>在 Django 中，通过浏览器去请求一个页面时，使用视图函数来处理这个请求，视图函数处理之后，要给浏览器返回页面内容。</p>
+<ul>
+<li><p>在<code>views.py</code>中定义视图函数</p>
+<p>  视图函数必须有一个参数<code>request</code>，处理之后需要返回一个 HttpResponse 的类对象。</p>
+<pre><code>  # http://127.0.0.1:8000/index
+  def index(request):
+      return HttpResponse(&quot;nb!&quot;)</code></pre></li>
+<li><p>配置项目路由</p>
+<pre><code>  urlpatterns = [
+      url(r&#39;^admin/&#39;, include(admin.site.urls)),
+      url(r&#39;^&#39;, include(&#39;booktest.urls&#39;)),
+  ]</code></pre></li>
+<li><p>配置应用路由，需要自己在应用目录下创建<code>urls.py</code></p>
+<pre><code>  urlpatterns = [
+      url(r&#39;index$&#39;, views.index),
+  ]</code></pre></li>
+<li><p>路由匹配过程</p>
+<p>  当浏览器中输入<code>http://127.0.0.1:8000/index</code>，会自动除去前面的<code>http://127.0.0.1:8000/</code>用剩下的部分进行匹配，这里即<code>index</code>，先根据项目路由中的<code>urlpatterns</code>从上到下匹配，匹配成功后，根据后面的<code>include()</code>确定下一部去哪个应用进行匹配，这里即<code>booktest.urls</code>，然后再到<code>urlpatterns</code>从上到下匹配，直到匹配成功为止。</p>
+<p>  匹配时严格根据正则规则匹配。（在新版本的django中函数 url 改成了函数 path，已经不需要正则表达式了）</p>
+</li>
+</ul>
+<h2 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h2><ul>
+<li>创建模板文件夹<code>templates</code>,并在<code>settings.py</code>的 TEMPLATES 中配置模板目录，通常可能有很多应用，所以在<code>templates</code>再以应用名建立文件夹<code>booktest</code><pre><code>  &#39;DIRS&#39;: [os.path.join(BASE_DIR, &#39;templates&#39;)],</code></pre></li>
+<li>使用模板文件分为三步：<ol>
+<li>加载模板文件：去模板目录下获取html文件内容，得到一个模板对象；</li>
+<li>定义模板上下文：像模板文件传递数据，传递时以键值对形式传递；</li>
+<li>模板渲染：得到一个标准的html内容。<pre><code>def my_render(request, template_path, context_dict):
+ temp = loader.get_template(&#39;booktest/index.html&#39;)
+ context = RequestContext(request, {})  # 这里传了空字典
+ res_html = temp.render(context)
+ return HttpResponse(res_html)</code></pre></li>
+<li>以上三步可以用一个函数<code>render</code>完成:<pre><code>def index(request):
+ # 传了两个变量，一个字符串一个列表
+ return render(request, &#39;booktest/index.html&#39;,
+           {&#39;content&#39;:&#39;hello world&#39;,&#39;list&#39;:list(range(1,10))})  </code></pre></li>
+</ol>
+</li>
+<li>模板文件不仅仅时一个html文件，可以说有自己的语法，变量需要用两组花括号包裹，循环遍历或判断要用花括号和百分号包裹，下面给出一个例子：<pre><code>  &lt;!DOCTYPE html&gt;
+  &lt;html lang=&quot;en&quot;&gt;
+  &lt;head&gt;
+      &lt;meta charset=&quot;UTF-8&quot;&gt;
+      &lt;title&gt;mplate file&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+      &lt;h1&gt;this is a template file&lt;/h1&gt;
+      use the template variable: &lt;br&gt;
+      {{ content }} &lt;br&gt;
+      use the list: &lt;br&gt;
+      {{ list }} &lt;br&gt;
+      for loop: &lt;br&gt;
+      &lt;ul&gt;
+          {% for i in list %}
+                &lt;li&gt;{{ i }}&lt;/li&gt;
+            {% endfor %}
+      &lt;/ul&gt;
+  &lt;/body&gt;
+  &lt;/html&gt;</code></pre></li>
+</ul>
+<h2 id="很简单的一个实例"><a href="#很简单的一个实例" class="headerlink" title="很简单的一个实例"></a>很简单的一个实例</h2><p>做一个很简单的实例，输入 <a href="http://127.0.0.1:8000/books" target="_blank" rel="noopener">http://127.0.0.1:8000/books</a> 进入页面显示书名，点击书名能跳转到书所包含的人物信息。</p>
+<ul>
+<li><p>最重要的就是设计视图函数</p>
+<pre><code>  def show_books(request):
+      books = BookInfo.objects.all()
+      return render(request, &#39;booktest/show_books.html&#39;,
+                  {&#39;books&#39;:books})
+
+  def detail(request, bid):
+      book = BookInfo.objects.get(id=bid)
+      heros = book.heroinfo_set.all()
+      return render(request, &#39;booktest/detail.html&#39;,
+          {&#39;book&#39;:book, &#39;heros&#39;:heros})</code></pre></li>
+<li><p>配置各个页面的路由</p>
+<pre><code>  urlpatterns = [
+      url(r&#39;^books$&#39;, views.show_books),
+      url(r&#39;^books/(\d+)$&#39;, views.detail),
+  ]</code></pre></li>
+<li><p>编写模板呈现页面</p>
+<pre><code>      # show_books.html
+      Information of Book is Followed:
+      &lt;ul&gt;
+          {% for book in books %}
+            &lt;li&gt;&lt;a href="/books/{{ book.id }}"&gt;{{ book.btitle }}&lt;/a&gt;&lt;/li&gt;
+            {% endfor %}
+      &lt;/ul&gt;
+
+      # detail.html
+      &lt;h1&gt;{{ book.btitle }}&lt;/h1&gt;
+      Information of Heros is Followed:&lt;br&gt;
+      &lt;ul&gt;
+          {% for hero in heros %}
+                &lt;li&gt;{{ hero.hname }}--{{ hero.hcomment }}&lt;/li&gt;
+            {% empty %}
+                &lt;li&gt;no Information of Hero&lt;/li&gt;
+            {% endfor %}
+      &lt;/ul&gt;  </code></pre></li>
+</ul>
 
             </div>
             <hr/>
@@ -536,7 +705,7 @@ $ gem install redis  # 最后安装 redis 集群接口</code></pre><p>执行完�
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://qayqaq.github.io/2020/07/29/redis-zhu-cong-ji-qun-de-bu-shu/">http://qayqaq.github.io/2020/07/29/redis-zhu-cong-ji-qun-de-bu-shu/</a>
+                    <a href="http://qayqaq.github.io/2020/07/30/django-de-ji-ben-ying-yong/">http://qayqaq.github.io/2020/07/30/django-de-ji-ben-ying-yong/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -574,8 +743,8 @@ $ gem install redis  # 最后安装 redis 集群接口</code></pre><p>执行完�
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/redis-%E9%9B%86%E7%BE%A4/">
-                                    <span class="chip bg-color">redis, 集群</span>
+                                <a href="/tags/django/">
+                                    <span class="chip bg-color">django</span>
                                 </a>
                             
                         </div>
@@ -746,7 +915,7 @@ $ gem install redis  # 最后安装 redis 集群接口</code></pre><p>执行完�
         repo: 'blog_comments',
         owner: 'qayqaq',
         admin: ["qayqaq"],
-        id: '2020-07-29T11-49-43',
+        id: '2020-07-30T13-00-36',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -770,9 +939,10 @@ $ gem install redis  # 最后安装 redis 集群接口</code></pre><p>执行完�
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2020/07/30/django-de-ji-ben-ying-yong/">
                     <div class="card-image">
@@ -793,9 +963,9 @@ __in
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-07-30
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-30
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -804,6 +974,7 @@ __in
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -822,27 +993,27 @@ __in
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/07/26/ubuntu-an-zhuang-python/">
+                <a href="/2020/07/29/redis-zhu-cong-ji-qun-de-bu-shu/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="ubuntu安装python">
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="redis主从集群的部署">
                         
-                        <span class="card-title">ubuntu安装python</span>
+                        <span class="card-title">redis主从集群的部署</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            由于 ubuntu20.04 自带的 python 版本是3.8，太高了，所以再安装 python3.7。
-首先，安装好编译环境。
-sudo apt-get install -y liblzma-dev
-sudo apt-get insta
+                            主从配置主从，直观来说就是备份，当一个 redis 服务挂掉时，为了防止数据丢失或者不能使用，有一个副本来代替原来的服务。
+配置主
+查看当前主机 ip 地址 ifconfig
+修改 redis.conf 中的 bind bind 192.1
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-26
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-29
                             </span>
                         <span class="publish-author">
                             
@@ -855,8 +1026,8 @@ sudo apt-get insta
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/python%EF%BC%8C%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/">
-                        <span class="chip bg-color">python，环境变量</span>
+                    <a href="/tags/redis-%E9%9B%86%E7%BE%A4/">
+                        <span class="chip bg-color">redis, 集群</span>
                     </a>
                     
                 </div>
