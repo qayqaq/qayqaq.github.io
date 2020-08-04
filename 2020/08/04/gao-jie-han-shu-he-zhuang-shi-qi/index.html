@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="django的视图, QayQaq">
+    <meta name="keywords" content="高阶函数和装饰器, QayQaq">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>django的视图 | QayQaq</title>
+    <title>高阶函数和装饰器 | QayQaq</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -286,12 +286,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/6.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">django的视图</h1>
+                    <h1 class="description center-align post-title">高阶函数和装饰器</h1>
                 </div>
             </div>
         </div>
@@ -408,8 +408,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/django%EF%BC%8C-Cookie%EF%BC%8C-Session/">
-                                <span class="chip bg-color">django， Cookie， Session</span>
+                            <a href="/tags/python%EF%BC%8C%E8%A3%85%E9%A5%B0%E5%99%A8/">
+                                <span class="chip bg-color">python，装饰器</span>
                             </a>
                         
                     </div>
@@ -424,7 +424,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-08-02
+                    2020-08-04
                 </div>
                 
 
@@ -440,133 +440,80 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="视图的功能"><a href="#视图的功能" class="headerlink" title="视图的功能"></a>视图的功能</h2><p>接受请求，进行处理，与 M 和 T 进行交互，返回应答。</p>
-<p>（1）返回 html 内容<code>HttpResponse</code>；</p>
-<p>（2）重定向<code>redirect</code>。</p>
-<h2 id="视图函数的使用"><a href="#视图函数的使用" class="headerlink" title="视图函数的使用"></a>视图函数的使用</h2><p>（1）定义视图函数：<code>request</code>参数必须有。是一个<code>HttpResponse</code>类型的对象。参数名可以变化，但不要更改。</p>
-<p>（2）配置 url，具体见基本应用。</p>
-<h2 id="错误视图"><a href="#错误视图" class="headerlink" title="错误视图"></a>错误视图</h2><p>（1）<strong>404</strong>：<strong>url没有配置或配置错误</strong>找不到页面，关闭调试模式之后，默认会显示一个标准的错误页面，如果要显示自定义页面，则需要在 templates 目录下面自定义一个 404.html 文件</p>
-<p>（2）<strong>500</strong>：<strong>视图出错</strong>服务器端的错误。</p>
-<h2 id="捕获-url-参数"><a href="#捕获-url-参数" class="headerlink" title="捕获 url 参数"></a>捕获 url 参数</h2><p>进行 url 匹配时，把所需要捕获的部分设置成一个<strong>正则表达式组</strong>，这样就会自动把匹配成功后相应组的内容作为参数传递给视图函数。</p>
-<p>（1）<strong>位置参数</strong>：参数名可以随意指定。<code>url(r&#39;^showarg(\d+)&#39;, views.show_arg)</code></p>
-<p>（2）<strong>关键字参数</strong>：在位置参数的基础上给正则表达式组命名即可。<code>url(r&#39;^showarg(?P&lt;num&gt;\d+)&#39;, views.show_arg)</code></p>
-<p>注：？P&lt;组名&gt;，<strong>关键字参数，视图中参数名必须与正则表达式组名一致。</strong></p>
-<h2 id="request-的常用参数"><a href="#request-的常用参数" class="headerlink" title="request 的常用参数"></a>request 的常用参数</h2><p>以下除非特别声明，否则都是只读的。</p>
-<ul>
-<li><code>path</code>: 一个字符串，表示请求的页面的完整路径，不包含域名和参数部分；</li>
-<li><code>method</code>: 一个字符串，表示是 GET 还是 POST；<ul>
-<li>在浏览器中<strong>给出地址</strong>发出请求采用 GET，如超链接；</li>
-<li>在浏览器中<strong>提交表单</strong>发起请求，若表单设置为 POST，则为POST；</li>
-</ul>
-</li>
-<li><code>GET</code>: <code>QueryDict</code>类型对象，类似于字典，包含 get 请求方式所有参数；</li>
-<li><code>POST</code>: <code>QueryDict</code>类型对象，类似于字典，包含 post 请求方式所有参数；</li>
-<li><code>FILES</code>: 一个类似于字典的对象，包含所有上传的文件；</li>
-<li><code>COOKIES</code>: 一个标准的 Python 字典，包含所有的 cookie，键和值都为ie字符串；</li>
-<li><code>session</code>: 一个既可读又可写的类似于字典的对象，表示当前的会话，只有当 django 启用会话的支持时才可用，详细内容后面叙述。</li>
-</ul>
-<p>注：<code>QueryDict</code>可以一个键对应多个值，get方法只会取这个键的最后一个值，getlist方法取出所有。</p>
-<p>给一个提交表单发出请求的实例：</p>
-<pre><code># views.py
-def login(request):
-    return render(request, &#39;booktest/login.html&#39;)
-def login_check(request):
-    username = request.POST.get(&#39;username&#39;)
-    password = request.POST.get(&#39;password&#39;)
-    if username == &#39;smart&#39; and password ==&#39;123&#39;:
-        return redirect(&#39;/index&#39;)
-    else:
-        return redirect(&#39;/login&#39;)
+                <h2 id="高阶函数"><a href="#高阶函数" class="headerlink" title="高阶函数"></a>高阶函数</h2><p>高阶函数一般分为3种：</p>
+<ol>
+<li>函数作为另一个函数的参数；</li>
+<li>函数作为另一个函数的返回值；</li>
+<li>函数嵌套。</li>
+</ol>
+<p>前两种都比较好理解，举例看第三种：</p>
+<p>调用外部函数是不会直接调用内部函数的，除非在外部函数内内部函数外调用了内部函数，比如下面的<code>return inner</code>其实就是返回了内部函数，所以<code>outer()()</code>实际上执行的就是<code>inner</code>函数。</p>
+<p>对于外部函数内定义的变量<code>x</code>，如果想在内部函数修改，需要关键字<code>nonlocal</code>，易知<code>outer()()</code>会输出<code>20, 11</code></p>
+<pre><code>def outer():
+    x = 10
+    def inner():
+        nonlocal x
+        y = x + 1
+        x = 20
+        print(x,y)
+    return inner
+outer()()</code></pre><h2 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h2><p>闭包是一个比较抽象的概念，实际上上面的代码段就是一个闭包，有两个特征：</p>
+<ol>
+<li>外部函数的返回值是内部函数；</li>
+<li>内部函数中操作了外部函数中的变量。</li>
+</ol>
+<h2 id="装饰器"><a href="#装饰器" class="headerlink" title="装饰器"></a>装饰器</h2><p>装饰器的基本结构如下，如果想写一个装饰器的话，就先写出这样的结构：</p>
+<pre><code>def cal_time(fn):
+    def inner():
+        pass
+@cal_time
+def demo():
+    pass</code></pre><p>根据以下代码说明装饰器的机理：</p>
+<ol>
+<li>遇见<code>@cal_time</code>即执行<code>cal_time</code>函数，但是这里外部函数中只有内部函数，所以没什么效果；</li>
+<li><code>def demo(n)</code>中的<code>demo</code>函数已经变成了<code>cal_time</code>的参数<code>fn</code>；</li>
+<li><code>m = demo()</code>中的<code>demo</code>函数其实是执行的装饰器函数中的内部函数<code>inner</code>。</li>
+</ol>
+<p><strong>分析：</strong>综合123，我们可以发现，<code>def demo(n)</code>只定义的一个输入参数<code>n</code>，而<code>m = demo(100000000, &#39;good&#39;, y=&#39;hello&#39;)</code>则有这么多参数，是因为这里的<code>demo</code>其实已经是<code>inner(x, *args, **kwargs)</code>，<code>s = fn(x)</code>之所以有输入参数且可以有返回值，是因为<code>def demo(n)</code>定义了一个输入参数且有一个返回值<code>return x</code>。把这两个<strong>替换关系</strong>搞明白了，装饰器就清楚了。</p>
+<pre><code>def cal_time(fn):
+    def inner(x, *args, **kwargs):
+        start = time.time()
+        s = fn(x)
+        end = time.time()
+        return s, end - start
+    return inner
+@cal_time
+def demo(n):
+    x = 0
+    for i in range(1,n):
+        x += i
+    return x
+m = demo(100000000, &#39;good&#39;, y=&#39;hello&#39;)
+print(m)</code></pre><h2 id="装饰器的应用"><a href="#装饰器的应用" class="headerlink" title="装饰器的应用"></a>装饰器的应用</h2><p>上面我们已经看到了，利用装饰器，可以非常方便地求出一个函数的运行时间，在这个函数的上面加上<code>@cal_time</code>然后再执行这个函数即可。</p>
+<p>装饰器还强大在，当想添加需求或有新的输入参数时，可以完全不改动原函数，下面看一个例子，<code>play_game</code>是一个函数表示某人在玩某个游戏。现在想添加功能，超过22点就禁止玩游戏</p>
+<pre><code>def play_game(name, game):
+    print(&#39;{} is playing {}&#39;.format(name, game))</code></pre><p>首先写出一个装饰器结构，这里的<code>fn</code>代表原来的<code>play_game</code>，而原函数有两个输入参数，所以<code>inner</code>中先传入两个参数<code>x,y</code>，根据新加的功能，至少还要输入时间点，所以再写入<code>*args, **kargs</code>：</p>
+<pre><code>def can_play(fn):
+    def inner(x, y, *args, **kargs):
+        pass
+    return inner</code></pre><p>然后就判断输入的时间点是否超过22点即可，若没超过，执行<code>fn()</code>，完整如下，这样就实现了不改动原来函数的情形下，完成了新需求，利用<code>get</code>方法还可以设定默认值，防止输入时没有输入<code>clock</code>参数，达到了不给时间点，默认不让玩游戏的功能。</p>
+<p>完整代码如下：</p>
+<pre><code>def can_play(fn);
+    def inner(x, y, args, **kargs):
+        # if args[0] &lt;= 22:
+        if kwargs.get(&#39;clock&#39;, 23) &lt;= 22:
+            fn(x, y)
+        else:
+            print(&#39;Too late&#39;)
+    return inner
 
-# urls.py
-urlpatterns = [
-    url(r&#39;^login$&#39;, views.login),
-    url(r&#39;^login_check$&#39;, views.login_check),
-]
+@can_play
+def play_game(name, game):
+    print(&#39;{} is playing {}&#39;.format(name, game))
 
-# login.html
-&lt;form method=&quot;post&quot; action=&quot;/login_check&quot;&gt;
-    USERNAME&lt;input type=&quot;text&quot; name=&quot;username&quot;&gt;&lt;br&gt;
-    PASSWORD&lt;input type=&quot;password&quot; name=&quot;password&quot;&gt;&lt;br&gt;
-    &lt;input type=&quot;submit&quot; value=&quot;login&quot;&gt;
-&lt;/form&gt;</code></pre><h2 id="状态保持——Cookie"><a href="#状态保持——Cookie" class="headerlink" title="状态保持——Cookie"></a>状态保持——Cookie</h2><p>http协议是无状态的，下一次去访问一个页面时并不知道上一次对这个页面作了什么。而使用Cookie就是类似达到一种保存的功能，本质上cookie是<strong>由服务器生成，存储在浏览器的一小段文本信息</strong>。</p>
-<p>想像你去饭店点菜，点完之后就去网吧玩了，打算估摸菜好了再回来吃；而老板很笨，记不住你点了什么菜，所以老板决定给你发一个小票上面记录了你要吃的所有东西并要求回来时带着小票这样老板就知道你要吃的是什么了。</p>
-<p>在这个过程中，老板在你点菜之后给你小票，就是浏览器像服务器发起请求之后，web服务器生成Cookie信息然后让浏览器保存Cookie信息，再带着小票来，就是浏览器再把cookie发送给服务器，这基本上就是cookie的过程。</p>
-<p>cookie 的特点：</p>
-<p>（1）以<strong>键值对</strong>方式进行存储；</p>
-<p>（2）通过浏览器访问一个网站时，会将浏览器存储的和这个网站相关的<strong>所有cookie信息</strong>发送给该网站的服务器，即<code>request.COOKIES</code>；</p>
-<p>（3）cookie是基于域名安全的；</p>
-<p>（4）cookie是有过期时间的，如果不指定，默认关闭浏览器之后cookie就会过期；</p>
-<p>（5）cookie 无论保存什么值，<strong>取出时都是字符串。</strong></p>
-<p>cookie 的设置：需要一个<code>HttpResponse</code>类的对象，或者是它的子类，<code>HttpReponseRedirect</code>，<code>JsonResponse</code>。可以通过<code>max_age</code>和<code>expires</code>参数设置过期时间。</p>
-<pre><code># views.py
-def set_cookie(request):
-    response = HttpResponse(&#39;set cookie&#39;, max_age=14*24*3600)
-    # response = HttpResponse(&#39;set cookie&#39;, expires=datetime.now()+timedelta(days=14))
-    response.set_cookie(&#39;num&#39;, 1)
-    return response
-def get_cookie(request):
-    num = request.COOKIES[&#39;num&#39;]
-    return HttpResponse(num)
-
-# urls.py
-urlpatterns = [
-    url(r&#39;^set_cookie$&#39;, views.set_cookie),
-    url(r&#39;^get_cookie$&#39;, views.get_cookie),
-]</code></pre><p>在上述登录例子基础上，利用Cookie可以方便地实现<strong>记住用户名</strong>这一功能，只需要在登陆成功后设置cookie，再次显示页面时拿出cookie，并在html页面上设置value值显示即可：</p>
-<pre><code># views.py
-def login(request):
-    if &#39;username&#39; in request.COOKIES:
-        username = request.COOKIES[&#39;username&#39;]
-    else:
-        username = &#39;&#39;
-    return render(request, &#39;booktest/login.html&#39;, {&#39;username&#39;:username})
-
-def login_check(request):
-    # request.POST
-    # request.GET
-    username = request.POST.get(&#39;username&#39;)
-    password = request.POST.get(&#39;password&#39;)
-    remember = request.POST.get(&#39;remember&#39;)
-    if username == &#39;smart&#39; and password ==&#39;123&#39;:
-        response = redirect(&#39;/index&#39;)
-        if remember == &#39;on&#39;:
-            response.set_cookie(&#39;username&#39;, username, max_age=7*24*3600)
-        return response
-        # return redirect(&#39;/index&#39;)
-    else:
-        return redirect(&#39;/login&#39;)
-
-# login.html
-USERNAME&lt;input type=&quot;text&quot; name=&quot;username&quot; value=&quot;{{ username }}&quot;&gt;&lt;br&gt;</code></pre><h2 id="状态保持——Session"><a href="#状态保持——Session" class="headerlink" title="状态保持——Session"></a>状态保持——Session</h2><p>想象你去网吧办了一张会员卡，网管给了你一个卡号，然后把你的姓名身份证等信息存储到了网吧电脑的表格里。</p>
-<p>在django中，网吧电脑的表格就是 django_session，这个表格类似于字典，每一个主键对应一些信息，给你的卡号即是主键 session_key，电脑里存下的信息就是 session_data，而网馆给了你一个卡号，其实是服务器给浏览器设置了一个 cookie，这个 cookie 名叫<code>sessionid</code>，是读取session信息的惟一标识码，等再次访问网站时，浏览器获取 sessionid，并根据 sessionid 的值取出对应的 session 信息。而这些信息都在<code>request.session</code>属性中。 </p>
-<p>session 的特点：</p>
-<p>（1）session 是以<strong>键值对</strong>进行存储的，session_data可以在 mysql 数据库中的 django_session 表格中看到，其中 session_data 是经过 base64 编码之后的，解码之后就能看到，设置的键值对；</p>
-<p>（2）session 依赖于 cookie，因为 sessionid 是 cookie；</p>
-<p>（3）也有过期时间，不指定的话，默认两周过期。</p>
-<p>（4）不像 cookie， session <strong>保存进去什么类型，取出就是什么类型.</strong></p>
-<p>（5）session涉及到安全性要求比较高的数据，银行卡密码，账户等。相对而言，cookie安全性要求不高，可以记住用户名。</p>
-<ul>
-<li>session 的设置：<code>request.session[&#39;key&#39;] = value</code></li>
-<li>根据键读取：<code>request.session.get(&#39;key&#39;, default)</code></li>
-<li>清除所有session，在存储中删除值部分：<code>request.session.clear()</code></li>
-<li>清除所有session，在存储中删除session整条数据：<code>request.session.flush()</code></li>
-<li>删除session中指定键和值：<code>del request.session[&#39;key&#39;]</code></li>
-<li>设置会话过期时间：<code>request.session.set_expiry(value)</code><ul>
-<li>value是整数，将在value秒没有活动后过期；</li>
-<li>value是0，将在浏览器关闭时过期；</li>
-<li>value是None，将在两周后过期。</li>
-</ul>
-</li>
-</ul>
-<p>在上述登录例子基础上，利用session可以方便地实现<strong>记住登陆状态</strong>这一功能，只需要在登陆成功后设置session的一个键<code>islogin</code>，再次发出登陆情请求时，如果session表格里由<code>islogin</code>这个键，直接显示登陆成功的页面：</p>
-<pre><code># def login_check
-if username == &#39;smart&#39; and password ==&#39;123&#39;:
-    request.session[&#39;islogin&#39;] = True
-        return response
-# def login
-if request.session.has_key[&#39;islogin&#39;]:
-    return redirect(&#39;/index&#39;)</code></pre>
+# play_game(&#39;123&#39;, &#39;abc&#39;, 18)
+play_game(&#39;123&#39;, &#39;abc&#39;, clock=23)
+</code></pre>
             </div>
             <hr/>
 
@@ -591,7 +538,7 @@ if request.session.has_key[&#39;islogin&#39;]:
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://qayqaq.github.io/2020/08/02/django-de-shi-tu/">http://qayqaq.github.io/2020/08/02/django-de-shi-tu/</a>
+                    <a href="http://qayqaq.github.io/2020/08/04/gao-jie-han-shu-he-zhuang-shi-qi/">http://qayqaq.github.io/2020/08/04/gao-jie-han-shu-he-zhuang-shi-qi/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -629,8 +576,8 @@ if request.session.has_key[&#39;islogin&#39;]:
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/django%EF%BC%8C-Cookie%EF%BC%8C-Session/">
-                                    <span class="chip bg-color">django， Cookie， Session</span>
+                                <a href="/tags/python%EF%BC%8C%E8%A3%85%E9%A5%B0%E5%99%A8/">
+                                    <span class="chip bg-color">python，装饰器</span>
                                 </a>
                             
                         </div>
@@ -801,7 +748,7 @@ if request.session.has_key[&#39;islogin&#39;]:
         repo: 'blog_comments',
         owner: 'qayqaq',
         admin: ["qayqaq"],
-        id: '2020-08-02T20-07-03',
+        id: '2020-08-04T10-15-02',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -825,9 +772,63 @@ if request.session.has_key[&#39;islogin&#39;]:
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2020/08/04/gao-jie-han-shu-he-zhuang-shi-qi/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="高阶函数和装饰器">
+                        
+                        <span class="card-title">高阶函数和装饰器</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            高阶函数高阶函数一般分为3种：
+
+函数作为另一个函数的参数；
+函数作为另一个函数的返回值；
+函数嵌套。
+
+前两种都比较好理解，举例看第三种：
+调用外部函数是不会直接调用内部函数的，除非在外部函数内内部函数外调用了内部函数，比如下面的retu
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-08-04
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Qay
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/python%EF%BC%8C%E8%A3%85%E9%A5%B0%E5%99%A8/">
+                        <span class="chip bg-color">python，装饰器</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
             <div class="card">
                 <a href="/2020/08/03/django-de-mo-ban/">
                     <div class="card-image">
@@ -848,58 +849,8 @@ if request.session.has_key[&#39;islogin&#39;]:
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-08-03
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-user fa-fw"></i>
-                            Qay
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/django/">
-                        <span class="chip bg-color">django</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2020/08/02/django-de-mo-xing/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="django的模型">
-                        
-                        <span class="card-title">django的模型</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            字段属性和选项：列举部分常用的，其余参考官方文档。
-字段类型，使用时需要引入 django.db.models：
-
-Autofield: 自增的，不用指定；
-BooleanField: 布尔；
-NullBooleanField: 支持 Nu
-                        
-                    </div>
-                    <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-08-02
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-08-03
                             </span>
                         <span class="publish-author">
                             
