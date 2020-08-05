@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="redis数据库基本操作, QayQaq">
+    <meta name="keywords" content="django其他一些技术, QayQaq">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>redis数据库基本操作 | QayQaq</title>
+    <title>django其他一些技术 | QayQaq</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -286,12 +286,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">redis数据库基本操作</h1>
+                    <h1 class="description center-align post-title">django其他一些技术</h1>
                 </div>
             </div>
         </div>
@@ -408,8 +408,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/redis/">
-                                <span class="chip bg-color">redis</span>
+                            <a href="/tags/django/">
+                                <span class="chip bg-color">django</span>
                             </a>
                         
                     </div>
@@ -424,7 +424,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-07-24
+                    2020-08-05
                 </div>
                 
 
@@ -440,148 +440,190 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="redis下载安装"><a href="#redis下载安装" class="headerlink" title="redis下载安装"></a>redis下载安装</h2><p>依次执行以下命令：</p>
-<pre><code>$ wget http://download.redis.io/releases/redis-3.2.8.tar.gz
-$ tar -zxvf redis-3.2.8.tar.gz
-$ sudo mv ./redis-3.2.8 /usr/local/redis
-$ cd /usr/local/redis
-$ sudo make
-$ sudo make test
-$ sudo make install</code></pre><p>安装完之后，查看 <code>/usr/local/bin</code>，如果有如下即安装成功。</p>
-<pre><code>-rwxr-xr-x 1 root root 3344600 7月  24 14:38 redis-benchmark  # redis性能测试工具
--rwxr-xr-x 1 root root   35872 7月  24 14:38 redis-check-aof  # AOF文件修复工具
--rwxr-xr-x 1 root root 6771608 7月  24 14:38 redis-check-rdb  # RDB文件修复工具
--rwxr-xr-x 1 root root 3564272 7月  24 14:38 redis-cli  # redis命令行客户端
-lrwxrwxrwx 1 root root      12 7月  24 14:38 redis-sentinel -&gt; redis-server
--rwxr-xr-x 1 root root 6771608 7月  24 14:38 redis-server  # redis服务器</code></pre><h2 id="redis配置"><a href="#redis配置" class="headerlink" title="redis配置"></a>redis配置</h2><p>安装完成之后，会在 redis 文件夹爱中产生一个 <code>redis.conf</code> 配置文件，把它移到 <code>/etc/redis/</code> 中,修改其中内容进行配置。</p>
-<pre><code> $ sudo cp redis.conf /etc/redis</code></pre><p>配置文件中需要注意的如下（修改过后）：</p>
-<pre><code>bind 127.0.0.1                             # 默认绑定ip  
-port 6379                                  # 默认端口
-daemonize yes                              # 是否为守护进程（默认为no）
-logfile &quot;/var/log/redis/redis-server.log&quot;  # 日志文件（需要新建）
-databases 16                               # 默认16个数据库，编号0-15
-dbfilename dump.rdb                        # 数据文件
-dir /var/lib/redis                         # 数据文件存储路径（需要新建）
-slaveof                                    # 主从配置</code></pre><h2 id="redis服务端和客户端的启动"><a href="#redis服务端和客户端的启动" class="headerlink" title="redis服务端和客户端的启动"></a>redis服务端和客户端的启动</h2><p>服务端命令为 <code>redis-server</code>,<code>redis-server --help</code> 可查看帮助文档。<br>启动与关闭服务器如下：</p>
-<pre><code>$ sudo redis-server /etc/redis/redis.conf  # 指定加载的配置文件，启动服务器
-$ ps aux | grep redis                      # 查看进程pid
-$ sudo kill -9 pid                         # 杀死服务器，即关闭</code></pre><p>客户端命令为 <code>redis-cli</code>,<code>redis-cli --help</code> 可查看帮助文档。<br>直接输入 <code>redis-cli</code> 即可连接服务端，输入 <code>ping</code> 起到检查连接的作用。</p>
-<pre><code>$ redis-cli
-127.0.0.1:6379&gt; ping
-PONG</code></pre><p>利用 <code>select</code> 命令切换制定数据库，如：</p>
-<pre><code>select 5</code></pre><h1 id="redis数据操作"><a href="#redis数据操作" class="headerlink" title="redis数据操作"></a>redis数据操作</h1><p><a href="doc.redisfans.com">redis命令大全</a> 很多命令可以去查找</p>
-<p>以下代码有公式形式，匹配例子。</p>
-<h2 id="string类型"><a href="#string类型" class="headerlink" title="string类型"></a>string类型</h2><p>设置的健不存在则添加，存在则修改。</p>
+                <h2 id="静态文件"><a href="#静态文件" class="headerlink" title="静态文件"></a>静态文件</h2><p>网页里使用的 css, js, images属于于静态文件。</p>
 <ul>
-<li>设置键值<pre><code>  set key value
-  set name itcast</code></pre></li>
-<li>设置键值及过期时间，以秒为单位<pre><code>  setex key seconds value
-  setex aa 3 aa</code></pre></li>
-<li>设置多个键值<pre><code>  mset key1 value1 key2 value2 ...
-  mset a1 python a2 java a3 c</code></pre></li>
-<li>追加值<pre><code>  append key value
-  append a1 haha</code></pre></li>
-<li>根据键获取值，如果不存在则返回 <code>nil</code> <pre><code>  get key
-  get name</code></pre></li>
-<li>获取多个键的值<pre><code>  mget key1 key2 ...
-  mget a1 a2 a3</code></pre><h2 id="键命令"><a href="#键命令" class="headerlink" title="键命令"></a>键命令</h2></li>
-<li>查找键，参数支持正则表达式<pre><code>  keys pattern
-  keys *       # 查看所有键
-  keys ‘a*’    # 包含 a 的键</code></pre></li>
-<li>判断键是否存在，存在返回1，否则返回0<pre><code>  exists key1
-  exists a1</code></pre></li>
-<li>查看对应的值的类型<pre><code>  type key
-  type a1</code></pre></li>
-<li>删除键及对应的值<pre><code>  del key1 key2 ... 
-  del a2 a3</code></pre></li>
-<li>设置过期时间，以秒为单位<pre><code>  expire key seconds
-  expire &#39;a1&#39; 3</code></pre></li>
-<li>查看有效时间<pre><code>  ttl key
-  setex bb 10 bb
-  ttl bb</code></pre></li>
+<li>新建静态文件夹<code>static</code>。</li>
+<li>配置静态文件所在的物理目录。<code>settings.py</code><ul>
+<li><code>STATIC_URL</code>设置访问静态文件对应的url；</li>
+<li><code>STATICFILES_DIRS</code>设置静态文件所在的物理目录</li>
 </ul>
-<h2 id="hash类型"><a href="#hash类型" class="headerlink" title="hash类型"></a>hash类型</h2><p>hash 用于存储对象，对象的结构为属性，值。值的类型为string。</p>
-<ul>
-<li>设置单个属性<pre><code>  hset key field value
-  hset user name itheima
-  # 如果报错，则表示为数据库快照，可执行下面命令使数据持久化
-  config set stop-writes-on-bgsave-error no</code></pre></li>
-<li>设置多个属性<pre><code>  set key field1 value1 field2 value2
-  set u2 name itcast age 11</code></pre></li>
-<li>获取指定键（对象）所有的属性<pre><code>  hkeys key
-  hkeys u2</code></pre></li>
-<li>获取一个属性的值<pre><code>  hget key field
-  hget u2 name</code></pre></li>
-<li>获取多个属性的值<pre><code>  hmget key field1 field2
-  hmget u2 name age</code></pre></li>
-<li>获取所有属性的值<pre><code>  hvals key
-  hvals u2</code></pre></li>
-<li>删除整个hash键及值，使用  <code>del</code> 命令</li>
-<li>删除属性，属性对应的值会被一起删除<pre><code>  hdel key field1 field2 ...
-  hdel u2 age</code></pre></li>
+</li>
+<li>动态生成静态文件路径<pre><code>  &lt;!DOCTYPE html&gt;
+  {% load staticfiles %}  # 加载静态文件
+  &lt;html lang=&quot;en&quot;&gt;
+      &lt;img src=&quot;{% static 'images/123.jpg' %}&quot;&gt;  # 动态拼接静态文件路径
+  &lt;/html&gt;</code></pre></li>
+<li>加载目录：先去配置的statics目录找，没找到再去各个应用下的statics目录找。</li>
 </ul>
-<h2 id="list类型"><a href="#list类型" class="headerlink" title="list类型"></a>list类型</h2><p>列表的元素类型为 <code>string</code>，按照插入顺序排序。</p>
+<h2 id="中间件"><a href="#中间件" class="headerlink" title="中间件"></a>中间件</h2><p>中间件函数是django框架给我们预留的函数接口，让我们可以干预请求和应答的过程。</p>
+<p>中间件函数会在每一个视图函数执行前执行，所以我们可以修改或定义中间件函数来达到某向目的，比如：禁止某个 ip 地址访问所有网页，这个功能是可以通过装饰器实现的，但是需要在每个视图函数前面都加上装饰，很麻烦，而用中间件函数则很方便。</p>
+<pre><code>EXCLUDE_IPS = []
+def blocked_ips(view_finc):
+    def wrapper(request, *view_args, **view_kwargs):
+        user_ip = request.META[&#39;REMOTE_ADDR&#39;]
+        if user_ip in EXCLUDE_IPS:
+            return HttpResponse(&#39;&lt;h1&gt;Forbidden&lt;h1&gt;&#39;)
+        else:
+            return view_finc(request, *view_args, **view_kwargs)
+    return wrapper
+
+@blocked_ips
+def static_test(request):
+    print(settings.STATICFILES_FINDERS)
+    # &#39;django.contrib.staticfiles.finders.FileSystemFinder&#39;, \
+    # &#39;django.contrib.staticfiles.finders.AppDirectoriesFinder&#39;
+    return render(request, &#39;booktest/static_test.html&#39;)
+
+@blocked_ips
+def index(request):
+    return render(request, &#39;booktest/index.html&#39;)</code></pre><ul>
+<li><p>获取浏览器端的 ip 地址<br>  使用 request 对象的 META 属性： <code>request.META[&#39;REMOTE_ADDR&#39;]</code></p>
+</li>
+<li><p>在应用中新建<code>middleware.py</code></p>
+</li>
+<li><p>定义中间件类，在类中定义中间件预留函数，包括：</p>
 <ul>
-<li>在左侧插入数据<pre><code>  lpush key value1 value2 ...
-  lpush a1 a b c</code></pre></li>
-<li>在右侧插入数据<pre><code>  rpush key value1 value2 ...
-  rpush a1 0 1</code></pre></li>
-<li>在指定元素的前或后插入新元素<pre><code>  linsert key before或after 现有元素 新元素
-  linsert a1 before b 3</code></pre></li>
-<li>获取列表里制定范围内的元素<pre><code>  lrange key start stop
-  lrange a1 0 -1</code></pre></li>
-<li>设置指定索引位置的元素值<pre><code>  lset key index value
-  lset a 1 z</code></pre></li>
-<li>删除指定元素<ul>
-<li>将列表中前 count 次出现的值为 value 的元素移除</li>
-<li>count &gt; 0; 从头往后移除</li>
-<li>count &lt; 0; 从后往头移除</li>
-<li>count = 0; 全移除<pre><code>irem key count value</code></pre></li>
+<li><p><code>__init__</code>: 服务器响应<strong>第一个请求</strong>的时候调用；</p>
+</li>
+<li><p><code>process_request</code>: 是在产生 request 对象，进行 url 匹配之前调用；</p>
+</li>
+<li><p><code>process_view</code>: 是 url 匹配之后，处理视图函数之前；</p>
+</li>
+<li><p><code>process_response</code>: 视图函数调用之后，内同返回给浏览器之前；</p>
+</li>
+<li><p><code>process_exception</code>: 视图函数出现异常，会调用这个函数；</p>
+<p>以上叙述即是<strong>正常工作流程</strong>：浏览器向django第一次发送请求，django产生一个request同时执行<code>__init__</code>，之后执行<code>process_request</code>，之后进行url匹配，之后执行<code>process_view</code>，之后调用视图函数，之后执行<code>process_response</code>，之后给出相应，在过程中若视图函数异常，执行<code>process_exception</code>。</p>
+<p>如果注册的多个中间件类中包含<code>process_exception</code>时，调用的顺序根注册的<strong>顺序是相反的</strong>。</p>
+<pre><code># middleware.py
+class BlockedIPSMiddleWare(object):
+  EXCLUDE_IPS = []
+  def process_view(self, request, view_func, *view_args, **veiw_kwargs):
+      user_ip = request.META[&#39;REMOTE_ADDR&#39;]
+      if user_ip in BlockedIPSMiddleWare.EXCLUDE_IPS:
+          return HttpResponse(&#39;&lt;h1&gt;Forbidden&lt;h1&gt;&#39;)
+
+class TestMiddleWare(object):
+  def __init__(self):
+      print(&#39;----init----&#39;)
+  def process_request(self, request):
+      print(&#39;----process_request----&#39;)
+  def process_view(self, request, view_func, *view_args, **view_kwargs):
+      print(&#39;----process_view----&#39;)
+  def process_response(self, request, response):
+      print(&#39;----process_reponse----&#39;)
+      return response
+
+class ExceptionTest1MiddleWare(object):
+  def process_exception(self, request, exception):
+      print(&#39;----process_exception1----&#39;)
+      print(exception)
+
+class ExceptionTest2MiddleWare(object):
+  def process_exception(self, request, exception):
+      print(&#39;----process_exception2----&#39;)</code></pre></li>
+</ul>
+</li>
+<li><p>注册中间件类：结合前面所说的顺序问题，当视图函数发生异常时，先执行<code>ExceptionTest2MiddleWare</code>。</p>
+<pre><code>  MIDDLEWARE_CLASSES = (
+      &#39;booktest.middleware.BlockedIPSMiddleWare&#39;,
+      &#39;booktest.middleware.TestMiddleWare&#39;,
+      &#39;booktest.middleware.ExceptionTest1MiddleWare&#39;,
+      &#39;booktest.middleware.ExceptionTest2MiddleWare&#39;,
+  )</code></pre></li>
+<li><p>还有一点需要注意的是，如果在流程中的任意位置返回了<code>response</code>，则<strong>直接跳到整个流程的最后一步</strong>，执行<code>process_response</code>，之后给出相应，这也是为什么最开始的装饰器可以达到干预应答的效果的原因。</p>
+</li>
+</ul>
+<h2 id="后台管理"><a href="#后台管理" class="headerlink" title="后台管理"></a>后台管理</h2><pre><code># models.py
+class AreaInfo(models.Model):
+    asize = models.BooleanField(default=False)
+    atitle = models.CharField(verbose_name=&#39;标题&#39;, max_length=20)
+    aParent = models.ForeignKey(&#39;self&#39;, null=True, blank=True)
+
+    def __str__(self):
+        return self.atitle
+
+    def title(self):
+        return self.atitle
+    title.admin_order_field = &#39;atitle&#39;
+    title.short_description = &#39;地区名称&#39;
+
+    def parent(self):
+        if self.aParent is None:
+            return &#39;&#39;
+        return self.aParent.atitle
+    parent.short_description = &#39;父级地区名称&#39;</code></pre><pre><code># admin.py
+from booktest.models import AreaInfo
+
+class AreaStackedInline(admin.StackedInline):
+    model = AreaInfo  # 多类名字
+    extra = 2
+class AreaTabularInline(admin.TabularInline):
+    model = AreaInfo  # 多类名字
+    extra = 2
+
+class AreaInfoAdmin(admin.ModelAdmin):
+    list_per_page = 10
+    list_display = [&#39;id&#39;, &#39;atitle&#39;, &#39;title&#39;, &#39;parent&#39;]
+    actions_on_bottom = True
+    actions_on_top = False
+    list_filter = [&#39;atitle&#39;]
+    search_fields = [&#39;atitle&#39;]
+
+    # fields = [&#39;aParent&#39;, &#39;atitle&#39;]
+    fieldsets = (
+        (&#39;基本&#39;, {&#39;fields&#39;:[&#39;atitle&#39;]}),
+        (&#39;高级&#39;, {&#39;fields&#39;:[&#39;aParent&#39;]})
+    )
+    inlines =  [AreaStackedInline]
+    # inlines = [AreaTabularInline]
+
+admin.site.register(AreaInfo, AreaInfoAdmin)</code></pre><h2 id="上传图片"><a href="#上传图片" class="headerlink" title="上传图片"></a>上传图片</h2><ul>
+<li><p>配置上传文件保存目录</p>
+<ul>
+<li>新建<code>media</code>文件夹</li>
+<li><code>MEDIA_ROOT = os.path.join(BASE_DIR, &#39;static/media&#39;)</code></li>
+</ul>
+</li>
+<li><p>后台管理页面上传图片</p>
+<ul>
+<li>设计模型类<pre><code>  class PicTest(models.Model):
+      goods_pic = models.ImageField(upload_to=&#39;booktest&#39;)</code></pre></li>
+<li>迁移生成表格</li>
+<li>注册模型类</li>
+</ul>
+</li>
+<li><p>用户自定义页面上传图片</p>
+<ul>
+<li><p>定义用户上传图片的页面并显示，是一个自定义的表单</p>
+<pre><code>  &lt;form method=&quot;post&quot; enctype=&quot;multipart/form-data&quot; action=&quot;/upload_handle&quot;&gt;
+      {% csrf_token %}
+      &lt;input type=&quot;file&quot; name=&quot;pic&quot;&gt;&lt;br&gt;
+      &lt;input type=&quot;submit&quot; value=&quot;上传&quot;&gt;
+  &lt;/form&gt;</code></pre></li>
+<li><p>定义接受上传文件的视图函数：request 对象有一个<strong>FILES属性</strong>，类似于字典，通过request.FILES可以获取上传文件的处理对象。当上传文件不大于2.5M，文件放在内存中，若大于2.5M，文件内容写入临时文件中。</p>
+<pre><code>  def show_upload(request):
+      return render(request, &#39;booktest/upload_pic.html&#39;)
+
+  def upload_handle(request):
+      # 1. 获取上传文件的处理对象
+      pic = request.FILES[&#39;pic&#39;]
+      print(type(pic))
+      # print(pic.name)
+      # pic.chunks()
+      # 创建一个文件
+      save_path = &#39;%/booktest/%s&#39;%(settings.MEDIA_ROOT, pic.name)
+      with open(save_path, &#39;wb&#39;) as f:
+          # 获取上传文件的内容 并写到创建的文件中
+          for content in pic.chunks():
+              f.write(content)
+      # 在数据库中保存上传记录
+      PicTest.objects.create(goods_pic=&#39;booktest/%s&#39;%pic.name)
+      # 返回
+      return HttpResponse(&#39;ok&#39;)</code></pre></li>
 </ul>
 </li>
 </ul>
-<h2 id="set类型"><a href="#set类型" class="headerlink" title="set类型"></a>set类型</h2><p>无序集合，元素为 string 类型， 唯一性，不重复。对于集合没有修改操作。</p>
-<ul>
-<li>添加元素<pre><code>  sadd key member1 member2 ...
-  sadd a3 zhangsan sili wangwu</code></pre></li>
-<li>返回所有元素<pre><code>  smembers key
-  smember a3</code></pre></li>
-<li>删除指定元素<pre><code>  srem key memebr1
-  srem a3 wangwu</code></pre></li>
-</ul>
-<h2 id="zset类型"><a href="#zset类型" class="headerlink" title="zset类型"></a>zset类型</h2><p>有序集合，元素为 string 类型， 唯一性，不重复。每个元素都会关联一个double类型的score，表示权重。通过权重将元素从小到大排序，和 set 一样没有修改操作。</p>
-<ul>
-<li>添加元素<pre><code>  zadd key score1 member1 score2 member2 ...
-  sadd a4 4 lisi 5 wangwu 6 zhaoliu 3 zhangsan</code></pre></li>
-<li>返回指定范围内元素<pre><code>  zrange keyy start stop
-  zrange a4 0 -1</code></pre></li>
-<li>返回 score 值在 min 和 max 之间的元素（闭区间）<pre><code>  zrangebyscore key min max
-  zrangebyscore a4 5 6</code></pre></li>
-<li>查看某 member 的 score 值<pre><code>  zscore key member
-  zscore a4 zhangsan</code></pre></li>
-<li>萨和年初指定元素<pre><code>  zrem key member1 member2 ...
-  zrem a4 zhangsan</code></pre></li>
-<li>删除 score 值在 min 和 max 之间的元素（闭区间）<ul>
-<li>将列表中前 count 次出现的值为 value 的元素移除</li>
-<li>count &gt; 0; 从头往后移除</li>
-<li>count &lt; 0; 从后往头移除</li>
-<li>count = 0; 全移除<pre><code>zremrangebyscore key min max
-zremrangebyscore a4 5 6</code></pre></li>
-</ul>
-</li>
-</ul>
-<h1 id="redis与python的交互"><a href="#redis与python的交互" class="headerlink" title="redis与python的交互"></a>redis与python的交互</h1><p><a href="python.jobbole.com">redis.py参考文档</a></p>
-<p>StrictRedis 对象方法能操作 string 类型</p>
-<pre><code>sr = StrictRedis(host = &#39;localhost&#39;, port = 6379, db = 0)
-# 上述都为默认值，可简写
-sr = StrictRedis()</code></pre><p>根据不同的类型，拥有不同的实例方法可以调用，与前面的 redis 命令对应，方法的参数与命令的参数也一致。</p>
-<h2 id="查看rdb文件"><a href="#查看rdb文件" class="headerlink" title="查看rdb文件"></a>查看rdb文件</h2><p>redis存储下来的数据文件是 <code>dump.rdb</code>，用vim打开是一堆乱码，在个github上发现了，查看rdb文件的工具。<a href="https://github.com/sripathikrishnan/redis-rdb-tools" target="_blank" rel="noopener">https://github.com/sripathikrishnan/redis-rdb-tools</a> 执行以下命令，可以以json形式查看数据。</p>
-<pre><code>rdb -c json dump.rdb</code></pre><p>由于rdb是一种快照备份，在客户端修改数据过后，不会立即在dump.rdb中显示出来，若想立刻看到，需要在客户端执行<code>BGSAVE</code>异步后台保存，再查看就可以了。注：conf文件中有快照的配置，如下：</p>
-<pre><code># 如果不备份就将 下边3个参数注释掉
-# 刷新快照到硬盘，必须满足两者要求才会触发
-save 900 1     # 即900秒之后至少1个关键字发生变化
-save 300 10    # 必须是300秒之后至少10个关键字发生变化
-save 60 10000  # 必须是60秒之后10000个关键字发生变化</code></pre>
+
             </div>
             <hr/>
 
@@ -606,7 +648,7 @@ save 60 10000  # 必须是60秒之后10000个关键字发生变化</code></pre>
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://qayqaq.github.io/2020/07/24/redis-shu-ju-ku-ji-ben-cao-zuo/">http://qayqaq.github.io/2020/07/24/redis-shu-ju-ku-ji-ben-cao-zuo/</a>
+                    <a href="http://qayqaq.github.io/2020/08/05/django-qi-ta-yi-xie-ji-zhu/">http://qayqaq.github.io/2020/08/05/django-qi-ta-yi-xie-ji-zhu/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -644,8 +686,8 @@ save 60 10000  # 必须是60秒之后10000个关键字发生变化</code></pre>
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/redis/">
-                                    <span class="chip bg-color">redis</span>
+                                <a href="/tags/django/">
+                                    <span class="chip bg-color">django</span>
                                 </a>
                             
                         </div>
@@ -816,7 +858,7 @@ save 60 10000  # 必须是60秒之后10000个关键字发生变化</code></pre>
         repo: 'blog_comments',
         owner: 'qayqaq',
         admin: ["qayqaq"],
-        id: '2020-07-24T15-36-20',
+        id: '2020-08-05T13-05-37',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -840,32 +882,35 @@ save 60 10000  # 必须是60秒之后10000个关键字发生变化</code></pre>
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2020/07/26/ubuntu-an-zhuang-python/">
+                <a href="/2020/08/05/django-qi-ta-yi-xie-ji-zhu/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="ubuntu安装python">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="django其他一些技术">
                         
-                        <span class="card-title">ubuntu安装python</span>
+                        <span class="card-title">django其他一些技术</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            由于 ubuntu20.04 自带的 python 版本是3.8，太高了，所以再安装 python3.7。
-首先，安装好编译环境。
-sudo apt-get install -y liblzma-dev
-sudo apt-get insta
+                            静态文件网页里使用的 css, js, images属于于静态文件。
+
+新建静态文件夹static。
+配置静态文件所在的物理目录。settings.py
+STATIC_URL设置访问静态文件对应的url；
+STATICFILES_DIRS设
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-07-26
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-08-05
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -874,11 +919,12 @@ sudo apt-get insta
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/python%EF%BC%8C%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/">
-                        <span class="chip bg-color">python，环境变量</span>
+                    <a href="/tags/django/">
+                        <span class="chip bg-color">django</span>
                     </a>
                     
                 </div>
@@ -892,28 +938,31 @@ sudo apt-get insta
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/07/24/win10-ubuntu20-04-shuang-xi-tong-da-jian-guo-cheng/">
+                <a href="/2020/08/04/gao-jie-han-shu-he-zhuang-shi-qi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Win10+Ubuntu20.04双系统搭建过程">
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="高阶函数和装饰器">
                         
-                        <span class="card-title">Win10+Ubuntu20.04双系统搭建过程</span>
+                        <span class="card-title">高阶函数和装饰器</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            鬼知道我这两天重启了多少次电脑，那个小洞都快被我插烂了。。。
+                            高阶函数高阶函数一般分为3种：
 
-因为有需求要用Ubuntu系统，之前用虚拟机实在是太卡了，索性下定决心装上双系统，总共用了将近2天时间才搞定，下面记录一下装机过程。（要是放图就太多了，不放了，步骤很详细）
+函数作为另一个函数的参数；
+函数作为另一个函数的返回值；
+函数嵌套。
 
-
+前两种都比较好理解，举例看第三种：
+调用外部函数是不会直接调用内部函数的，除非在外部函数内内部函数外调用了内部函数，比如下面的retu
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-24
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-08-04
                             </span>
                         <span class="publish-author">
                             
@@ -926,8 +975,8 @@ sudo apt-get insta
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E5%8F%8C%E7%B3%BB%E7%BB%9F%EF%BC%8CUbuntu/">
-                        <span class="chip bg-color">双系统，Ubuntu</span>
+                    <a href="/tags/python%EF%BC%8C%E8%A3%85%E9%A5%B0%E5%99%A8/">
+                        <span class="chip bg-color">python，装饰器</span>
                     </a>
                     
                 </div>
