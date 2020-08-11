@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>现代控制理论知识梳理</title>
+      <link href="/2020/08/11/xian-dai-kong-zhi-li-lun-zhi-shi-shu-li/"/>
+      <url>/2020/08/11/xian-dai-kong-zhi-li-lun-zhi-shi-shu-li/</url>
+      
+        <content type="html"><![CDATA[<p>最近学习了现代控制理论，把笔记存下来。</p><h2 id="State-Space-Representation-状态空间表达"><a href="#State-Space-Representation-状态空间表达" class="headerlink" title="State-Space Representation 状态空间表达"></a>State-Space Representation 状态空间表达</h2><p><img src="https://github.com/qayqaq/qayqaq.github.io/blob/master/images/advanced_control/1.jpg?raw=true" alt=""></p><h2 id="Phase-Portrait-相图-相轨迹"><a href="#Phase-Portrait-相图-相轨迹" class="headerlink" title="Phase Portrait 相图 相轨迹"></a>Phase Portrait 相图 相轨迹</h2><p><img src="https://github.com/qayqaq/qayqaq.github.io/blob/master/images/advanced_control/2.jpg?raw=true" alt=""><br><img src="https://github.com/qayqaq/qayqaq.github.io/blob/master/images/advanced_control/3.jpg?raw=true" alt=""></p><h2 id="Controllability-可控性"><a href="#Controllability-可控性" class="headerlink" title="Controllability 可控性"></a>Controllability 可控性</h2><p><img src="https://github.com/qayqaq/qayqaq.github.io/blob/master/images/advanced_control/4.jpg?raw=true" alt=""></p><h2 id="Stability-稳定性"><a href="#Stability-稳定性" class="headerlink" title="Stability 稳定性"></a>Stability 稳定性</h2><p><img src="https://github.com/qayqaq/qayqaq.github.io/blob/master/images/advanced_control/5.jpg?raw=true" alt=""></p><h2 id="Linear-Controler-Design-线性控制器设计"><a href="#Linear-Controler-Design-线性控制器设计" class="headerlink" title="Linear Controler Design 线性控制器设计"></a>Linear Controler Design 线性控制器设计</h2><p><img src="https://github.com/qayqaq/qayqaq.github.io/blob/master/images/advanced_control/6.jpg?raw=true" alt=""></p><h2 id="Linear-Quadratic-regulator-LQR控制器"><a href="#Linear-Quadratic-regulator-LQR控制器" class="headerlink" title="Linear Quadratic regulator LQR控制器"></a>Linear Quadratic regulator LQR控制器</h2><p><img src="https://github.com/qayqaq/qayqaq.github.io/blob/master/images/advanced_control/7.jpg?raw=true" alt=""></p><h2 id="Follow-a-Desired-Path-轨迹跟踪"><a href="#Follow-a-Desired-Path-轨迹跟踪" class="headerlink" title="Follow a Desired Path 轨迹跟踪"></a>Follow a Desired Path 轨迹跟踪</h2><p><img src="https://github.com/qayqaq/qayqaq.github.io/blob/master/images/advanced_control/8.jpg?raw=true" alt=""></p><h2 id="Linear-Observer-Design-状态观测器设计"><a href="#Linear-Observer-Design-状态观测器设计" class="headerlink" title="Linear Observer Design 状态观测器设计"></a>Linear Observer Design 状态观测器设计</h2><p><img src="https://github.com/qayqaq/qayqaq.github.io/blob/master/images/advanced_control/9.jpg?raw=true" alt=""></p><h2 id="Oberservability-and-Seperation-Principle-可观测性和分离原理"><a href="#Oberservability-and-Seperation-Principle-可观测性和分离原理" class="headerlink" title="Oberservability and Seperation Principle 可观测性和分离原理"></a>Oberservability and Seperation Principle 可观测性和分离原理</h2><p><img src="https://github.com/qayqaq/qayqaq.github.io/blob/master/images/advanced_control/10.jpg?raw=true" alt=""></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 现代控制理论 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>django其他一些技术</title>
       <link href="/2020/08/05/django-qi-ta-yi-xie-ji-zhu/"/>
       <url>/2020/08/05/django-qi-ta-yi-xie-ji-zhu/</url>
