@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>从分类器开始谈到Yolo</title>
+      <link href="/2020/08/13/cong-fen-lei-qi-kai-shi-tan-dao-yolo/"/>
+      <url>/2020/08/13/cong-fen-lei-qi-kai-shi-tan-dao-yolo/</url>
+      
+        <content type="html"><![CDATA[<p>搞懂一个网络模型，最重要的就是三个部分：</p><ul><li><strong>前向计算</strong></li><li><strong>损失函数</strong></li><li><strong>反响传播</strong></li></ul><p>其中最重要的就是如何进行前向计算，我们要搞懂网络中的数据如何从前向后计算；至于损失函数这一部分，我们还要思考<strong>如何组织样本数据</strong>，构造函数表示预测值与标记值的差异，常用的由 MSE 和交叉熵。</p><p>本文不涉及数学推导，从最简单的分类器说起，逐步改进，最终得到基础版的 Yolo，也是现在 Yolo5 的基础。</p><p>要处理的对象都是<strong>图片</strong>。</p><h2 id="分类器"><a href="#分类器" class="headerlink" title="分类器"></a>分类器</h2><p>分类模型需要将一张图片进行归类。</p><p>分类模型的输入是一个矩阵，输出是一个 onehot 向量，其过程可以简写为：</p><p><strong>img3 -&gt; cbrp16 -&gt; cbrp32 -&gt; cbrp64 -&gt; cbrp128 -&gt; […] -&gt; fc256 -&gt; fc10</strong></p><p>上述过程，完成了 rgb 3通道图片分为 10 类的过程，很好理解。那么检测器的构造是否可以利用分类器呢？</p><h2 id="检测器"><a href="#检测器" class="headerlink" title="检测器"></a>检测器</h2><p>检测模型需要对一张给定的图片中的内容是否为指定物体进行检测，如果是的话，要求用方框框出来。</p><p>检测模型的输入仍然是一个矩阵，而要输出一个框，那么应该如何用数学方式表达这个框呢？</p><p>方法有很多，比如对角的两个点 (p1,p2)，或者用中心点和宽高 (Cx,Cy,w,h)，或者用一个定点和宽高 (x,y,w,h)，有的情景输出的是旋转后的框，那么就要再加一个输出量 angle。</p><p>有了输入和输出，如何构造检测器呢？</p><p>我们的方案是<strong>遍历性分类</strong>：遍历所有大小与位置，对每个框都执行分类器就可以了，但是缺点也很明显：<strong>耗时严重</strong>。</p><p>这种方案就是传统检测器的思路，其本质仍然是分类器，是一个<strong>背景与前景（如人脸）的而二分类</strong>，这里注意我们不可能各个大小的窗口都训练一个分类器，而是要归一化所有的框再传进分类器。</p><p>这里还有一个问题就是，在训练样本的过程中显然<strong>背景图片多，前景图片少</strong>，<strong>二分类样本不均衡</strong>，这是一个很值得改善的问题。</p><p>我们看到了传统检测器的缺陷，那么如何改进呢？</p><h2 id="直接拟合结果的检测"><a href="#直接拟合结果的检测" class="headerlink" title="直接拟合结果的检测"></a>直接拟合结果的检测</h2><p>有一个方法是很显然的，既然分类器的输出结果 onehot 向量也可以看成是神经网络拟合得出的分类结果，那么为什么不能直接通过神经网络拟合出框的位置呢？</p><p>在输出结果时，经常还输出一个量，<strong>置信度confidence</strong>，所以我们将 onehot 向量，换成一个 (c,x,y,w,h) 这样的向量作为输出，直接确定位置：</p><p><strong>img3 -&gt; cbrp16 -&gt; cbrp32 -&gt; cbrp64 -&gt; cbrp128 -&gt; […] -&gt; fc256 -&gt; fc5(c,x,y,w,h)</strong></p><p>接下来，同理通过计算 (c,x,y,w,h) 与 样本事先的(c,x,y,w,h)* 之间的 loss，再通过反向传播，不断调整** conv 中的 w，b 和 BN 中的 $\alpha$，$\beta$**，最终训练出检测器。</p><p>到了这里的检测器已经能稍微快一些的检测目标了，但是显然只能检测到一个目标，那么多目标怎么办呢？</p><h2 id="基于直接拟合的多目标检测"><a href="#基于直接拟合的多目标检测" class="headerlink" title="基于直接拟合的多目标检测"></a>基于直接拟合的多目标检测</h2><p>一个很直接的想法就是输出 N 个 (c,x,y,w,h)，那么输出多少合适呢？显然，为了能都检测到，我们要<strong>尽可能输出多的框</strong>：</p><p><strong>img3 -&gt; cbrp16 -&gt; cbrp32 -&gt; cbrp64 -&gt; cbrp128 -&gt; […] -&gt; fc256 -&gt; fc[5✖N][(c,x,y,w,h)✖N]</strong></p><p>如何比较好的取 N？由于采用的是卷积网络，<strong>多组输出与位置强相关，所以要采用按空间位置来映射</strong>，比如，将图片均分 3✖4，那么 N=W✖H=3✖4，网络的输出就是 3✖4✖5 这样的三维矩阵。</p><p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/Yolo/1.png" alt=""></p><p>刚才也说了，我们为了尽可能得到所有检测结果，就要取很多框，这里最多就取了12个框，但是如果真实照片没有这么多袋检测的物体，比如一张人脸正好在分界线上，则有两个框都表示这一张脸，这个问题如何解决？</p><p><strong>NMS 算法</strong>应运而生，抑制最大值算法，核心思想<strong>使用 IoU 来算重合度</strong>，来进行不同框之间的聚类，不能再聚类时就得到了最终结果。</p><p>输出已经时三维了，已经有点复杂了，我们在这里说一下如何表示损失函数，包含了置信度 c 的 c_loss 和几何位置的损失 geo_loss：</p><p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/Yolo/2.png" alt=""></p><hr><p>到这里我们已经可以检测多目标了，但是如果要同时检测多类呢？</p><h2 id="多类多目标检测"><a href="#多类多目标检测" class="headerlink" title="多类多目标检测"></a>多类多目标检测</h2><p>说到类别就是 onehot 向量，显然我们只需要扩展输出结果的每个(c,x,y,w,h)，在其后面加上一个 onehot 向量，若要分两类：</p><p><strong>img3 -&gt; cbrp16 -&gt; cbrp32 -&gt; cbrp64 -&gt; cbrp128 -&gt; […] -&gt; fc256 -&gt; fc[(5+2)✖N][(c,x,y,w,h,onehot)✖N]</strong></p><p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/Yolo/3.png" alt=""></p><p>损失函数也只是在之前的基础上多了一个类别上带来的损失：</p><p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/Yolo/4.png" alt=""></p><p>到这里感觉如果不考虑速度只考虑需求貌似已经比较好了，但是<strong>检测模型有一个通病：小目标检测不佳</strong>，要如何改善呢？</p><h2 id="改善小目标检测不佳的检测器（Yolo基本版）"><a href="#改善小目标检测不佳的检测器（Yolo基本版）" class="headerlink" title="改善小目标检测不佳的检测器（Yolo基本版）"></a>改善小目标检测不佳的检测器（Yolo基本版）</h2><p>方案就是<strong>专门设计神经元来拟合小目标。</strong></p><p>网络结构变为：</p><p><strong>img3 -&gt; cbrp16 -&gt; cbrp32 -&gt; cbrp64 -&gt; cbrp128 -&gt; […] -&gt; fc256 -&gt; fc[(5+5+2)✖N][(c,x,y,w,h,c‘,x’,y‘,w’,h‘,onehot)✖N]</strong></p><p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/Yolo/5.png" alt=""></p><p>简单说就是，若为大目标，则前面的 (c,x,y,w,h) 来预测，后面的置信度为 0 ，若为小目标，则后面的 (c,x,y,w,h) 来预测，前面的置信度为 0 。这样分开来改善。那么问题就是，怎么区分大目标还是小目标呢。</p><p>当然时人为界定，我们给定一个大框，一个小框，当检测出的框的大小处在大框和小框之间时，利用 <strong>IoU</strong> 来计算重合度来判定。</p><p>一路改进到了这里，就是基本的 Yolo 了。最后放出几张论文的图片，论文中的 loss 函数写的比较复杂，难以理解，还是按照遍历图片，遍历行，遍历列比较好理解，最后拆开写和论文中就是一样的。</p><p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/Yolo/6.png" alt=""></p><p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/Yolo/7.png" alt=""></p><p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/Yolo/8.png" alt=""></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Yolo </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>卡尔曼滤波笔记</title>
       <link href="/2020/08/13/qia-er-man-lu-bo-bi-ji/"/>
       <url>/2020/08/13/qia-er-man-lu-bo-bi-ji/</url>
