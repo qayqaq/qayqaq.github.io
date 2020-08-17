@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="从分类器开始谈到Yolo, QayQaq">
+    <meta name="keywords" content="非线性控制理论知识梳理, QayQaq">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>从分类器开始谈到Yolo | QayQaq</title>
+    <title>非线性控制理论知识梳理 | QayQaq</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -286,12 +286,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">从分类器开始谈到Yolo</h1>
+                    <h1 class="description center-align post-title">非线性控制理论知识梳理</h1>
                 </div>
             </div>
         </div>
@@ -408,8 +408,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Yolo/">
-                                <span class="chip bg-color">Yolo</span>
+                            <a href="/tags/%E9%9D%9E%E7%BA%BF%E6%80%A7%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA/">
+                                <span class="chip bg-color">非线性控制理论</span>
                             </a>
                         
                     </div>
@@ -424,7 +424,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-08-13
+                    2020-08-17
                 </div>
                 
 
@@ -440,58 +440,14 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>搞懂一个网络模型，最重要的就是三个部分：</p>
-<ul>
-<li><strong>前向计算</strong></li>
-<li><strong>损失函数</strong></li>
-<li><strong>反响传播</strong></li>
-</ul>
-<p>其中最重要的就是如何进行前向计算，我们要搞懂网络中的数据如何从前向后计算；至于损失函数这一部分，我们还要思考<strong>如何组织样本数据</strong>，构造函数表示预测值与标记值的差异，常用的由 MSE 和交叉熵。</p>
-<p>本文不涉及数学推导，从最简单的分类器说起，逐步改进，最终得到基础版的 Yolo，也是现在 Yolo5 的基础。</p>
-<p>要处理的对象都是<strong>图片</strong>。</p>
-<h2 id="分类器"><a href="#分类器" class="headerlink" title="分类器"></a>分类器</h2><p>分类模型需要将一张图片进行归类。</p>
-<p>分类模型的输入是一个矩阵，输出是一个 onehot 向量，其过程可以简写为：</p>
-<p><strong>img3 -&gt; cbrp16 -&gt; cbrp32 -&gt; cbrp64 -&gt; cbrp128 -&gt; […] -&gt; fc256 -&gt; fc10</strong></p>
-<p>上述过程，完成了 rgb 3通道图片分为 10 类的过程，很好理解。那么检测器的构造是否可以利用分类器呢？</p>
-<h2 id="检测器"><a href="#检测器" class="headerlink" title="检测器"></a>检测器</h2><p>检测模型需要对一张给定的图片中的内容是否为指定物体进行检测，如果是的话，要求用方框框出来。</p>
-<p>检测模型的输入仍然是一个矩阵，而要输出一个框，那么应该如何用数学方式表达这个框呢？</p>
-<p>方法有很多，比如对角的两个点 (p1,p2)，或者用中心点和宽高 (Cx,Cy,w,h)，或者用一个定点和宽高 (x,y,w,h)，有的情景输出的是旋转后的框，那么就要再加一个输出量 angle。</p>
-<p>有了输入和输出，如何构造检测器呢？</p>
-<p>我们的方案是<strong>遍历性分类</strong>：遍历所有大小与位置，对每个框都执行分类器就可以了，但是缺点也很明显：<strong>耗时严重</strong>。</p>
-<p>这种方案就是传统检测器的思路，其本质仍然是分类器，是一个<strong>背景与前景（如人脸）的而二分类</strong>，这里注意我们不可能各个大小的窗口都训练一个分类器，而是要归一化所有的框再传进分类器。</p>
-<p>这里还有一个问题就是，在训练样本的过程中显然<strong>背景图片多，前景图片少</strong>，<strong>二分类样本不均衡</strong>，这是一个很值得改善的问题。</p>
-<p>我们看到了传统检测器的缺陷，那么如何改进呢？</p>
-<h2 id="直接拟合结果的检测"><a href="#直接拟合结果的检测" class="headerlink" title="直接拟合结果的检测"></a>直接拟合结果的检测</h2><p>有一个方法是很显然的，既然分类器的输出结果 onehot 向量也可以看成是神经网络拟合得出的分类结果，那么为什么不能直接通过神经网络拟合出框的位置呢？</p>
-<p>在输出结果时，经常还输出一个量，<strong>置信度confidence</strong>，所以我们将 onehot 向量，换成一个 (c,x,y,w,h) 这样的向量作为输出，直接确定位置：</p>
-<p><strong>img3 -&gt; cbrp16 -&gt; cbrp32 -&gt; cbrp64 -&gt; cbrp128 -&gt; […] -&gt; fc256 -&gt; fc5(c,x,y,w,h)</strong></p>
-<p>接下来，同理通过计算 (c,x,y,w,h) 与 样本事先的(c,x,y,w,h)* 之间的 loss，再通过反向传播，不断调整** conv 中的 w，b 和 BN 中的 $\alpha$，$\beta$**，最终训练出检测器。</p>
-<p>到了这里的检测器已经能稍微快一些的检测目标了，但是显然只能检测到一个目标，那么多目标怎么办呢？</p>
-<h2 id="基于直接拟合的多目标检测"><a href="#基于直接拟合的多目标检测" class="headerlink" title="基于直接拟合的多目标检测"></a>基于直接拟合的多目标检测</h2><p>一个很直接的想法就是输出 N 个 (c,x,y,w,h)，那么输出多少合适呢？显然，为了能都检测到，我们要<strong>尽可能输出多的框</strong>：</p>
-<p><strong>img3 -&gt; cbrp16 -&gt; cbrp32 -&gt; cbrp64 -&gt; cbrp128 -&gt; […] -&gt; fc256 -&gt; fc[5✖N][(c,x,y,w,h)✖N]</strong></p>
-<p>如何比较好的取 N？由于采用的是卷积网络，<strong>多组输出与位置强相关，所以要采用按空间位置来映射</strong>，比如，将图片均分 3✖4，那么 N=W✖H=3✖4，网络的输出就是 3✖4✖5 这样的三维矩阵。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/Yolo/1.png" alt=""></p>
-<p>刚才也说了，我们为了尽可能得到所有检测结果，就要取很多框，这里最多就取了12个框，但是如果真实照片没有这么多袋检测的物体，比如一张人脸正好在分界线上，则有两个框都表示这一张脸，这个问题如何解决？</p>
-<p><strong>NMS 算法</strong>应运而生，抑制最大值算法，核心思想<strong>使用 IoU 来算重合度</strong>，来进行不同框之间的聚类，不能再聚类时就得到了最终结果。</p>
-<p>输出已经时三维了，已经有点复杂了，我们在这里说一下如何表示损失函数，包含了置信度 c 的 c_loss 和几何位置的损失 geo_loss：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/Yolo/2.png" alt=""></p>
-<hr>
-<p>到这里我们已经可以检测多目标了，但是如果要同时检测多类呢？</p>
-<h2 id="多类多目标检测"><a href="#多类多目标检测" class="headerlink" title="多类多目标检测"></a>多类多目标检测</h2><p>说到类别就是 onehot 向量，显然我们只需要扩展输出结果的每个(c,x,y,w,h)，在其后面加上一个 onehot 向量，若要分两类：</p>
-<p><strong>img3 -&gt; cbrp16 -&gt; cbrp32 -&gt; cbrp64 -&gt; cbrp128 -&gt; […] -&gt; fc256 -&gt; fc[(5+2)✖N][(c,x,y,w,h,onehot)✖N]</strong></p>
-<p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/Yolo/3.png" alt=""></p>
-<p>损失函数也只是在之前的基础上多了一个类别上带来的损失：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/Yolo/4.png" alt=""></p>
-<p>到这里感觉如果不考虑速度只考虑需求貌似已经比较好了，但是<strong>检测模型有一个通病：小目标检测不佳</strong>，要如何改善呢？</p>
-<h2 id="改善小目标检测不佳的检测器（Yolo基本版）"><a href="#改善小目标检测不佳的检测器（Yolo基本版）" class="headerlink" title="改善小目标检测不佳的检测器（Yolo基本版）"></a>改善小目标检测不佳的检测器（Yolo基本版）</h2><p>方案就是<strong>专门设计神经元来拟合小目标。</strong></p>
-<p>网络结构变为：</p>
-<p><strong>img3 -&gt; cbrp16 -&gt; cbrp32 -&gt; cbrp64 -&gt; cbrp128 -&gt; […] -&gt; fc256 -&gt; fc[(5+5+2)✖N][(c,x,y,w,h,c‘,x’,y‘,w’,h‘,onehot)✖N]</strong></p>
-<p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/Yolo/5.png" alt=""></p>
-<p>简单说就是，若为大目标，则前面的 (c,x,y,w,h) 来预测，后面的置信度为 0 ，若为小目标，则后面的 (c,x,y,w,h) 来预测，前面的置信度为 0 。这样分开来改善。那么问题就是，怎么区分大目标还是小目标呢。</p>
-<p>当然时人为界定，我们给定一个大框，一个小框，当检测出的框的大小处在大框和小框之间时，利用 <strong>IoU</strong> 来计算重合度来判定。</p>
-<p>一路改进到了这里，就是基本的 Yolo 了。最后放出几张论文的图片，论文中的 loss 函数写的比较复杂，难以理解，还是按照遍历图片，遍历行，遍历列比较好理解，最后拆开写和论文中就是一样的。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/Yolo/6.png" alt=""></p>
-<p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/Yolo/7.png" alt=""></p>
-<p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/Yolo/8.png" alt=""></p>
+                <p>最近学习了非线性控制理论，把笔记存下来。</p>
+<h2 id="Lyapunov-Direct-Method-李雅普诺夫直接方法"><a href="#Lyapunov-Direct-Method-李雅普诺夫直接方法" class="headerlink" title="Lyapunov Direct Method 李雅普诺夫直接方法"></a>Lyapunov Direct Method 李雅普诺夫直接方法</h2><p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/nonlinear_control/1.jpg" alt=""></p>
+<h2 id="The-Invariance-Principle-LaSalle’s-Theorem-拉塞尔不变性原理"><a href="#The-Invariance-Principle-LaSalle’s-Theorem-拉塞尔不变性原理" class="headerlink" title="The Invariance Principle - LaSalle’s Theorem 拉塞尔不变性原理"></a>The Invariance Principle - LaSalle’s Theorem 拉塞尔不变性原理</h2><p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/nonlinear_control/2.jpg" alt=""></p>
+<h2 id="Basic-Feedback-Stabilization-基本非线性系统稳定性设计"><a href="#Basic-Feedback-Stabilization-基本非线性系统稳定性设计" class="headerlink" title="Basic Feedback Stabilization 基本非线性系统稳定性设计"></a>Basic Feedback Stabilization 基本非线性系统稳定性设计</h2><p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/nonlinear_control/3.jpg" alt=""></p>
+<h2 id="Nonlinear-Backstepping-Controller-反布法控制器"><a href="#Nonlinear-Backstepping-Controller-反布法控制器" class="headerlink" title="Nonlinear Backstepping Controller 反布法控制器"></a>Nonlinear Backstepping Controller 反布法控制器</h2><p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/nonlinear_control/4.jpg" alt=""><br><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/nonlinear_control/5.jpg" alt=""></p>
+<h2 id="Nonlinear-Adaptive-Controller-自适应控制器"><a href="#Nonlinear-Adaptive-Controller-自适应控制器" class="headerlink" title="Nonlinear Adaptive Controller 自适应控制器"></a>Nonlinear Adaptive Controller 自适应控制器</h2><p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/nonlinear_control/6.jpg" alt=""></p>
+<h2 id="Sliding-Mode-in-Robust-Control-鲁棒控制中的滑模控制"><a href="#Sliding-Mode-in-Robust-Control-鲁棒控制中的滑模控制" class="headerlink" title="Sliding Mode in Robust Control 鲁棒控制中的滑模控制"></a>Sliding Mode in Robust Control 鲁棒控制中的滑模控制</h2><p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/nonlinear_control/7.jpg" alt=""></p>
+<h2 id="High-Gain-and-High-Frequency-Control-鲁棒控制中的高增益和高频控制"><a href="#High-Gain-and-High-Frequency-Control-鲁棒控制中的高增益和高频控制" class="headerlink" title="High Gain and High Frequency Control 鲁棒控制中的高增益和高频控制"></a>High Gain and High Frequency Control 鲁棒控制中的高增益和高频控制</h2><p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/nonlinear_control/8.jpg" alt=""></p>
 
             </div>
             <hr/>
@@ -517,7 +473,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://qayqaq.github.io/2020/08/13/cong-fen-lei-qi-kai-shi-tan-dao-yolo/">http://qayqaq.github.io/2020/08/13/cong-fen-lei-qi-kai-shi-tan-dao-yolo/</a>
+                    <a href="http://qayqaq.github.io/2020/08/17/fei-xian-xing-kong-zhi-li-lun-zhi-shi-shu-li/">http://qayqaq.github.io/2020/08/17/fei-xian-xing-kong-zhi-li-lun-zhi-shi-shu-li/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -555,8 +511,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Yolo/">
-                                    <span class="chip bg-color">Yolo</span>
+                                <a href="/tags/%E9%9D%9E%E7%BA%BF%E6%80%A7%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA/">
+                                    <span class="chip bg-color">非线性控制理论</span>
                                 </a>
                             
                         </div>
@@ -727,7 +683,7 @@
         repo: 'blog_comments',
         owner: 'qayqaq',
         admin: ["qayqaq"],
-        id: '2020-08-13T15-23-30',
+        id: '2020-08-17T16-39-01',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -751,9 +707,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2020/08/17/fei-xian-xing-kong-zhi-li-lun-zhi-shi-shu-li/">
                     <div class="card-image">
@@ -774,9 +731,9 @@ Basic Feedba
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-08-17
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-08-17
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -785,6 +742,7 @@ Basic Feedba
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -803,22 +761,25 @@ Basic Feedba
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/08/13/qia-er-man-lu-bo-bi-ji/">
+                <a href="/2020/08/13/cong-fen-lei-qi-kai-shi-tan-dao-yolo/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="卡尔曼滤波笔记">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="从分类器开始谈到Yolo">
                         
-                        <span class="card-title">卡尔曼滤波笔记</span>
+                        <span class="card-title">从分类器开始谈到Yolo</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            首先讨论了关于测量的数学构造，得到一个递推式，在推导卡尔曼滤波公式时应用了相同原理。
-然后分别讨论了，数据融合，协方差矩阵，状态空间表达。其中数据融合就是根据测量值和分布确定最优值，这也是卡尔曼滤波滤去噪声得到最优解的根本思想。
+                            搞懂一个网络模型，最重要的就是三个部分：
 
+前向计算
+损失函数
+反响传播
 
+其中最重要的就是如何进行前向计算，我们要搞懂网络中的数据如何从前向后计算；至于损失函数这一部分，我们还要思考如何组织样本数据，构造函数表示预测值与标记值的差异，常用
                         
                     </div>
                     <div class="publish-info">
@@ -836,8 +797,8 @@ Basic Feedba
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Kalman-Filter/">
-                        <span class="chip bg-color">Kalman Filter</span>
+                    <a href="/tags/Yolo/">
+                        <span class="chip bg-color">Yolo</span>
                     </a>
                     
                 </div>

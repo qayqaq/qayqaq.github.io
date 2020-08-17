@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>非线性控制理论知识梳理</title>
+      <link href="/2020/08/17/fei-xian-xing-kong-zhi-li-lun-zhi-shi-shu-li/"/>
+      <url>/2020/08/17/fei-xian-xing-kong-zhi-li-lun-zhi-shi-shu-li/</url>
+      
+        <content type="html"><![CDATA[<p>最近学习了非线性控制理论，把笔记存下来。</p><h2 id="Lyapunov-Direct-Method-李雅普诺夫直接方法"><a href="#Lyapunov-Direct-Method-李雅普诺夫直接方法" class="headerlink" title="Lyapunov Direct Method 李雅普诺夫直接方法"></a>Lyapunov Direct Method 李雅普诺夫直接方法</h2><p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/nonlinear_control/1.jpg" alt=""></p><h2 id="The-Invariance-Principle-LaSalle’s-Theorem-拉塞尔不变性原理"><a href="#The-Invariance-Principle-LaSalle’s-Theorem-拉塞尔不变性原理" class="headerlink" title="The Invariance Principle - LaSalle’s Theorem 拉塞尔不变性原理"></a>The Invariance Principle - LaSalle’s Theorem 拉塞尔不变性原理</h2><p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/nonlinear_control/2.jpg" alt=""></p><h2 id="Basic-Feedback-Stabilization-基本非线性系统稳定性设计"><a href="#Basic-Feedback-Stabilization-基本非线性系统稳定性设计" class="headerlink" title="Basic Feedback Stabilization 基本非线性系统稳定性设计"></a>Basic Feedback Stabilization 基本非线性系统稳定性设计</h2><p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/nonlinear_control/3.jpg" alt=""></p><h2 id="Nonlinear-Backstepping-Controller-反布法控制器"><a href="#Nonlinear-Backstepping-Controller-反布法控制器" class="headerlink" title="Nonlinear Backstepping Controller 反布法控制器"></a>Nonlinear Backstepping Controller 反布法控制器</h2><p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/nonlinear_control/4.jpg" alt=""><br><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/nonlinear_control/5.jpg" alt=""></p><h2 id="Nonlinear-Adaptive-Controller-自适应控制器"><a href="#Nonlinear-Adaptive-Controller-自适应控制器" class="headerlink" title="Nonlinear Adaptive Controller 自适应控制器"></a>Nonlinear Adaptive Controller 自适应控制器</h2><p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/nonlinear_control/6.jpg" alt=""></p><h2 id="Sliding-Mode-in-Robust-Control-鲁棒控制中的滑模控制"><a href="#Sliding-Mode-in-Robust-Control-鲁棒控制中的滑模控制" class="headerlink" title="Sliding Mode in Robust Control 鲁棒控制中的滑模控制"></a>Sliding Mode in Robust Control 鲁棒控制中的滑模控制</h2><p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/nonlinear_control/7.jpg" alt=""></p><h2 id="High-Gain-and-High-Frequency-Control-鲁棒控制中的高增益和高频控制"><a href="#High-Gain-and-High-Frequency-Control-鲁棒控制中的高增益和高频控制" class="headerlink" title="High Gain and High Frequency Control 鲁棒控制中的高增益和高频控制"></a>High Gain and High Frequency Control 鲁棒控制中的高增益和高频控制</h2><p><img src="https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/image/nonlinear_control/8.jpg" alt=""></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 非线性控制理论 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>从分类器开始谈到Yolo</title>
       <link href="/2020/08/13/cong-fen-lei-qi-kai-shi-tan-dao-yolo/"/>
       <url>/2020/08/13/cong-fen-lei-qi-kai-shi-tan-dao-yolo/</url>
