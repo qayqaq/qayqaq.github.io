@@ -350,10 +350,15 @@
 
 
 
+<div class="statis">
+    <span class="count"><a href="/categories">7</a></span>
+    <span class="name">分类</span>
+</div>
+
 
 
 <div class="statis">
-    <span class="count"><a href="/tags">12</a></span>
+    <span class="count"><a href="/tags">11</a></span>
     <span class="name">标签</span>
 </div>
 
@@ -375,10 +380,15 @@
 
 
 
+<div class="statis">
+    <span class="count"><a href="/categories">7</a></span>
+    <span class="name">分类</span>
+</div>
+
 
 
 <div class="statis">
-    <span class="count"><a href="/tags">12</a></span>
+    <span class="count"><a href="/tags">11</a></span>
     <span class="name">标签</span>
 </div>
 
@@ -564,7 +574,7 @@
                 type: 'pie',
                 radius: '50%',
                 color: ['#6772e5', '#ff9e0f', '#fa755a', '#3ecf8e', '#82d3f4', '#ab47bc', '#525f7f', '#f51c47', '#26A69A'],
-                data: [],
+                data: [{"name":"redis","value":2},{"name":"Ubuntu系统","value":2},{"name":"django框架","value":5},{"name":"CSS样式","value":2},{"name":"控制理论","value":3},{"name":"python","value":1},{"name":"神经网络","value":1}],
                 itemStyle: {
                     emphasis: {
                         shadowBlur: 10,
@@ -588,7 +598,7 @@
         xAxis: [
             {
                 type: 'category',
-                data: ["django","CSS","双系统，Ubuntu","redis","python，环境变量","redis, 集群","django， Cookie， Session","python，装饰器","现代控制理论","Kalman Filter"]
+                data: ["django","redis","CSS","django， Cookie， Session","python，装饰器","现代控制理论","Kalman Filter","Yolo","非线性控制理论","环境变量"]
             }
         ],
         yAxis: [
@@ -601,7 +611,7 @@
                 type: 'bar',
                 color: ['#82d3f4'],
                 barWidth : 18,
-                data: [4,2,1,1,1,1,1,1,1,1],
+                data: [4,2,2,1,1,1,1,1,1,1],
                 markPoint: {
                     symbolSize: 45,
                     data: [{
