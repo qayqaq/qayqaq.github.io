@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="CSS3新增的转换过渡动画, QayQaq">
+    <meta name="keywords" content="大三返校后随笔, QayQaq">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>CSS3新增的转换过渡动画 | QayQaq</title>
+    <title>大三返校后随笔 | QayQaq</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -286,12 +286,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">CSS3新增的转换过渡动画</h1>
+                    <h1 class="description center-align post-title">大三返校后随笔</h1>
                 </div>
             </div>
         </div>
@@ -406,13 +406,9 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/CSS/">
-                                <span class="chip bg-color">CSS</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -420,8 +416,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/CSS%E6%A0%B7%E5%BC%8F/" class="post-category">
-                                CSS样式
+                            <a href="/categories/%E9%9A%8F%E7%AC%94/" class="post-category">
+                                随笔
                             </a>
                         
                     </div>
@@ -433,7 +429,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-08-18
+                    2020-09-06
                 </div>
                 
 
@@ -449,116 +445,32 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>CSS3 中新增了三大类样式，转换，过渡，动画。学习这三种样式的前提是 a 标签的伪类选择器。</p>
-<h2 id="a-标签的伪类选择器"><a href="#a-标签的伪类选择器" class="headerlink" title="a 标签的伪类选择器"></a>a 标签的伪类选择器</h2><ul>
-<li><code>:link</code> 可以修改从未被访问过状态的样式</li>
-<li><code>:visited</code> 访问过状态</li>
-<li><code>:hover</code> 悬停状态</li>
-<li><code>:active</code> 长按状态</li>
-</ul>
-<p>注意：如果同时出现了上述的几个选择器，则<strong>必须遵循上述的顺序。</strong></p>
-<p>如果默认状态的样式和被访问过状态的样式一样，可以缩写为 <code>a {...}</code>而不用再写<code>:link</code>和<code>:visited</code>。</p>
-<p>习惯上，伪类选择器写在标签选择器后面，和a标签盒子相关的属性都写在标签选择器中（显示模式/宽度/高度/padding/margin），和a标签中文字/背景相关的都写在伪类选择器中。</p>
-<h2 id="过渡"><a href="#过渡" class="headerlink" title="过渡"></a>过渡</h2><h3 id="过渡属性"><a href="#过渡属性" class="headerlink" title="过渡属性"></a>过渡属性</h3><p>利用伪类选择器，写出过渡的最后状态，如<code>div {width: 100px} div:hover {width: 300px}</code></p>
-<p>再满足过渡三要素，就可以发生过渡：</p>
-<ul>
-<li>必须要有属性发生变化</li>
-<li>必须告诉系统哪个属性需要执行过渡效果</li>
-<li>必须告诉系统过渡效果持续时长</li>
-</ul>
-<p>transition还有两个属性：</p>
-<ul>
-<li><code>transition-delay</code>表示延迟多久后再开始过渡</li>
-<li><code>transition-timing-function</code>表示过渡的速度，取值有：<code>linear/ease/ease-in/ease-out/ease-in-out/cubic-bezier(x1,y1,x2,y2)</code></li>
-<li><code>transition</code>简写方式：<em>过渡属性 过渡时长 运动速度 延迟时间</em> <code>transition: widthc5s linear 0s, background-color 5s ease 0s;</code></li>
-</ul>
-<p>注意：当多个属性需要同时执行过渡效果时用逗号隔开即可：<code>transition-property: width, background-color; transition-duration: 5s,5s;</code></p>
-<p>如果多个属性运动的速度/延迟时间/持续时间都一样，可以利用<code>transition: all ...;</code></p>
-<h3 id="编写过渡的套路"><a href="#编写过渡的套路" class="headerlink" title="编写过渡的套路"></a>编写过渡的套路</h3><ol>
-<li>不要管过渡，先编写基本页面；</li>
-<li>修改我们认为需要需改的属性；</li>
-<li>回过头，去给被修改属性的那个元素添加过渡即可。</li>
-</ol>
-<h2 id="2D转换"><a href="#2D转换" class="headerlink" title="2D转换"></a>2D转换</h2><h3 id="transform属性"><a href="#transform属性" class="headerlink" title="transform属性"></a>transform属性</h3><ul>
-<li>旋转：<code>transform: rotate(45deg);</code>顺时针旋转45度，注意此时自身坐标系跟着旋转；</li>
-<li>缩放：<code>transform: scale(a,b);</code>沿着自身坐标系水平和竖直方向缩放 a，b 倍，注意<strong>父元素被拉伸了，那么子元素也会被拉伸</strong>；</li>
-<li>平移：<code>transform: translate(x,y);</code>沿着自身坐标系的水平和竖直方向平移 x，y。</li>
-<li>综合写法：<code>transform: rotate(45deg) translate(100px,0px) scale(1.5);</code>注意，进行多个变换时，用<strong>空格</strong>隔开，且旋转之后的平移不再是水平的。</li>
-</ul>
-<p><strong>清除转换可以使用<code>transform: none;</code></strong></p>
-<h3 id="transform-origin形变中心点"><a href="#transform-origin形变中心点" class="headerlink" title="transform-origin形变中心点"></a>transform-origin形变中心点</h3><p>默认情况下，所有的元素都是以自己的中心点作为参考来旋转，可以通过形变中心点属性来修改这个参考点。<code>transform-origin: x y;</code>这里 x，y 可以用 px，%，或者 center 等方位此来表示。</p>
-<h3 id="旋转的轴向"><a href="#旋转的轴向" class="headerlink" title="旋转的轴向"></a>旋转的轴向</h3><p> <code>rotate</code>默认是绕 z轴旋转，等价于<code>rotateZ()</code>，还有<code>rotateX()</code>，<code>rotateY()</code>。</p>
-<h3 id="透视属性"><a href="#透视属性" class="headerlink" title="透视属性"></a>透视属性</h3><p> 透视，近大远小，<code>perspective: x;</code>表示举例 x 远进行观察，对上述的rotateX 和 rotateY 可以加上 perspective 属性就会很容易观察。</p>
-<p> 注意：透视属性<strong>必须添加到待观察元素的父元素或祖先</strong>，而不能放到自身。</p>
-<h2 id="阴影"><a href="#阴影" class="headerlink" title="阴影"></a>阴影</h2><h3 id="盒子阴影"><a href="#盒子阴影" class="headerlink" title="盒子阴影"></a>盒子阴影</h3><p> <code>box-shadow: 水平偏移 垂直偏移 模糊度 阴影扩展 阴影颜色 内外阴影</code><br> 注意：盒子阴影分为内和外，默认是外阴影。阴影颜色由盒子内的<strong>文字颜色</strong>决定。快速添加阴影<strong>只需前三个参数。</strong></p>
-<h3 id="文字阴影"><a href="#文字阴影" class="headerlink" title="文字阴影"></a>文字阴影</h3><p> <code>text-shadow: 水平偏移 垂直偏移 模糊度 阴影颜色</code><br> 颜色同上。</p>
-<h2 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h2><h3 id="动画属性"><a href="#动画属性" class="headerlink" title="动画属性"></a>动画属性</h3><p>动画与过渡类似，区别在于，过渡必须人为触发才能执行动画，而动画则不用人为触发。并且动画和过渡一样都需要满足三要素。</p>
-<ul>
-<li>告诉系统要执行哪个动画<code>animation-name: qay</code>； </li>
-<li>自己创建一个叫做 qay 的动画，创建有两种方式，<strong>fromto和百分比</strong>;<pre><code>  @keyframes qay {
-      from {...}
-      to {...}
-  }
-  @keyframes qay {
-      0% {}
-      20% {} ...
-      70% {}
-      100% {}
-  }</code></pre></li>
-<li>告诉系统动画持续的时长<code>animation-duration: 3s</code>.</li>
-</ul>
-<p>动画模块还有几个属性：</p>
-<ul>
-<li><code>animation-delay</code>和transition一样；</li>
-<li><code>animation-timing-function</code>和transition一样；</li>
-<li><code>animation-iteration-count</code>表示动画执行次数，<code>infinite</code>表示无限次；</li>
-<li><code>animation-direction</code>表示是否往返，<code>normal</code>（默认）或<code>alternate</code>,注意往返算执行2次；</li>
-<li><code>animation-play-state</code>控制动画状态，<code>running</code>（默认）表示动画运动，<code>paused</code>表示暂停；</li>
-<li><code>animation-fill-mode</code>其实动画时可以分成三个状态的，如果加上延迟，可以发现有一个<strong>等待状态</strong>，还有<strong>执行状态</strong>，<strong>结束状态</strong>。这个属性的作用是<strong>指定动画等待状态和结束状态的样式</strong>。，取值有:<ul>
-<li><code>none</code>默认，无改变；</li>
-<li><code>backward</code>让动画在等待状态时显示第一帧；</li>
-<li><code>forward</code>让动画在结束状态时显示最后一帧；</li>
-<li><code>both</code>以上两者效果结合。</li>
-</ul>
-</li>
-<li><code>animation</code>简写方式：<em>名称 时长 速度 延迟 重复次数 是否往返</em></li>
-</ul>
-<p>注意点：</p>
-<ol>
-<li>动画中如果有和默认样式中同名的属性，会覆盖默认样式中同名的属性；</li>
-<li>因为会覆盖，可以把这个默认的样式拿到 fromto 中来，但是在编写动画的时候一定要<strong>把固定不变的值写在前面，需要变化的值写在后面。</strong></li>
-</ol>
-<h2 id="3D转换"><a href="#3D转换" class="headerlink" title="3D转换"></a>3D转换</h2><p>和透视一样，如果想看到某个元素的3d效果，需要给他的父元素添加<code>transform-style: preserved-3d;</code></p>
-<h2 id="背景属性"><a href="#背景属性" class="headerlink" title="背景属性"></a>背景属性</h2><h3 id="背景尺寸属性"><a href="#背景尺寸属性" class="headerlink" title="背景尺寸属性"></a>背景尺寸属性</h3><p>背景尺寸属性是CSS3中新增的一个属性，专门用于设置背景图片。</p>
-<ul>
-<li>默认，不加操作，显示原图大小；</li>
-<li>具体像素，<code>background-size: 100px 100px;</code></li>
-<li>百分比，<code>background-size: 80% 50%;</code></li>
-<li>宽度等比拉伸，<code>background-size: auto 100px;</code></li>
-<li>高度等比拉伸，<code>background-size: 100px auto;</code></li>
-<li>cover，<code>background-size: cover;</code>等比拉伸，且拉伸到<strong>宽度和高度</strong>都填满整个元素；</li>
-<li>contain，<code>background-size: contain;</code>等比拉伸，且拉伸到<strong>宽度或高度</strong>填满整个元素；</li>
-</ul>
-<h3 id="背景图片定位区域属性"><a href="#背景图片定位区域属性" class="headerlink" title="背景图片定位区域属性"></a>背景图片定位区域属性</h3><ul>
-<li>padding-box（默认从padding开始显示）<code>background-origin: padding-box;</code></li>
-<li>border-box，从边框开始显示<code>background-origin: border-box;</code></li>
-<li>content-box，从内容开始显示<code>background-origin: content-box;</code></li>
-</ul>
-<h3 id="背景绘制区域的属性"><a href="#背景绘制区域的属性" class="headerlink" title="背景绘制区域的属性"></a>背景绘制区域的属性</h3><ul>
-<li>padding-box，从padding开始显示<code>background-clip: padding-box;</code></li>
-<li>border-box，（默认从border开始显示）<code>background-clip: border-box;</code></li>
-<li>content-box，从内容开始显示<code>background-clip: content-box;</code></li>
-</ul>
-<h3 id="多重背景图片"><a href="#多重背景图片" class="headerlink" title="多重背景图片"></a>多重背景图片</h3><p>多张背景图片之间用<strong>逗号隔开即可</strong>，<strong>先添加的图片会盖住后添加的</strong>，但是可以通过背景定位来分开。</p>
-<p>当一个盒子中有很多背景图片，都用逗号隔开时，编写很麻烦，建议在编写多重背景时分开写。</p>
-<h2 id="超大图片"><a href="#超大图片" class="headerlink" title="超大图片"></a>超大图片</h2><p>因为现在显示器各种各样，所以在准备类似封面或者广告图片的时候一般都会准备超大的图片，然后把重要的内容放在中间而两边一般是纯色。</p>
-<p>在这种情况下，往往图片元素的大小就会超过了父元素的大小，而这时如果想设置图片居中的话，无论是在自身样式中设置<code>margin: 0 auto;</code>还是在父元素样式中设置<code>text-align: center;</code>都会失效。</p>
-<p>解决办法有两种：</p>
-<ul>
-<li>可以通过在定位中的居中办法，即设置<code>left:50%; margin-left: -自身宽度的一半;</code></li>
-<li>更推荐的一种是，在父元素样式中设置<code>text-align: center;</code>，然后再自身样式中设置<code>margin:0 -100%;</code>，然后因为图片过大默认会产生滚动条，所以可以在父元素样式中设置<code>overflow: hidden;</code></li>
-</ul>
+                <h1 id="疫情返校后的假期杂记"><a href="#疫情返校后的假期杂记" class="headerlink" title="疫情返校后的假期杂记"></a>疫情返校后的假期杂记</h1><p>经历了史上最长的假期，我终于在昨天返回了学校，昨天基本一直在收拾宿舍，今天中午像往常一样睡不着，遂起床想写个随笔，记录一下我还能想起来的，我认为值得记录下的琐事。</p>
+<hr>
 
+<p>第一件就是“天天向上组织”。在假期的时候，学习效率很低，自制力也越来越差，于是打算去家附近的图书馆每天自习，结果竟然发现，有一些高中和初中同学也在这里自习，大家有的准备考研，有的准备毕业工作，都在努力学习，有比较熟络的，也有初中之后就再也没见过的，但是经过了着一个假期，大家的关系都亲近了起来，就这样成为了一个组织。</p>
+<p>这个书房我在高考之后就去过，那时还没什么名气，去的人也不多。因为疫情，大家都回不去学校，结果附近的人就都去那里学习了，每天都要早去占座。还好我们的组织中有同学能够起床很早哈哈，每天都能占到座位。中午也可以在旁边的食堂吃饭，真的是特别方便，这一段日子简直是找回了在学校学习的效率和感觉，甚至要更好，因为即使在学校，更多的时候也是自己一个人学习，说实话感觉到了一种陪伴，没有那么孤单。</p>
+<p>开学之前，大家也都聚了几次餐，还在电影院白嫖看了场电影，也算是好事坏事都一起干了。我们还约好了以后放假回家仍然一起自习。对我这个不擅长社交的人来说，我真的太喜欢这样了，真切地希望我们能够一直继续下去。</p>
+<hr>
+
+<p>打麻将也是一件很开心的事，我初高中的时候可以说是特别爱打麻将了，上了大学之后也没有人可以一起玩，就不怎么玩了。这次放假回家和高中同学们打了几次麻将，很惊讶现在的打法和原来的差了好多，而且大家现在也开始实打实的赢钱了。虽然打麻将还是很欢乐的，但是想来，也确实是好久没和一些高中同学有来往了，即使真的聊天，也不知道该聊什么，听说大家还是有几个群的，麻将群，王者群，篮球群，每天在一起闲聊扯淡液是不错的，我也真的是很感谢很多同学，在聚餐的时候想起来叫上我，能减少一些在生活中我心中对他人的疏离感。</p>
+<p>我现在最珍惜的应该就是这段时间建立起的朋友圈，我比较害怕再失去这些朋友，也不是很爱结交新朋友。</p>
+<hr>
+
+<p>这段时间还报了个英语口语班，虽然想出国的念头不断被国际形势和特朗普也许还有我心中不断萌发的爱国情怀消磨，但是我觉得在国内也是应该把口语学好。这个教育机构的理念大概就是模仿重复表现再反复练习，老师称这是最好的学习口语的体系模式，毕竟人家是教英语的教育机构，把教学方法说的再好也是正常，经过了解之后我还是挺认可的，但是我的思路没那么复杂，我感觉无非是把文本一遍一遍背熟即可。老师还很强调表演，我则非常排斥，并且很惊奇为什么班上很多同学都那么热衷且活跃。</p>
+<p>和一个同学聊过之后发现，可能真的是生长和学习环境造就了一个人，我在一个四线小城市长大，其实是挺自卑的，但是在北京我却知道了英语固然重要，但是也只是一个工具，有很多东西远比英语重要的多，国家科技发展也绝不是把什么语音语调练到极致就可以了。但是这个同学说她之前在农村读书，当得知了我在北京上大学之后，很高兴地说有了一个谈资。</p>
+<p>我真的极其赞赏他们的积极乐观态度，这也是我不具有的。永远不要唉声叹气，境遇不如自己的人有那么多，他们还都在积极学习生活。但是不得不说我本身与这个机构的理念和价值观差的很多，无法说谁对谁错，只是各行各业需要不同性格不同能力的人罢了，我明确我需要所得什么就可以了。</p>
+<hr>
+
+<p>因为高考之后就没再回来看过老师，所以临开学之前，和两个同学一起回到了高中去看望班主任。老师之前和我们说我们这届之后就不再当班主任了，说太累了，但是今年，学校把各个班在校榜名列前茅的学生聚了起来组成了一个小班让她来代班了，可见我的班主任多么受认可，我极其有幸能成为她的学生。</p>
+<p>我们回首过去，谈到未来，还对比了当时的我们和现在的她的学生，时而发笑时而深思，看着在晚自习的学弟学妹们，真的比较感慨，一时又说不上来什么，最终值得感叹高中时光是多么美好，身边的人时一辈子里最后的真正意义上的同学，而早晚这些人里面也有很多会渐行渐远。</p>
+<p>老师还邀请我给不久后的高三誓师大会录了视频，给学弟学妹们加油打气，我也认真准备了稿子，将高考的现实性和重要性说给他们听，如果能有任何一个人有那么一点触动，我都很满足。</p>
+<hr>
+
+<p>假期学了一些 HTML CSS Javescript 主要是前端的东西，还过了一遍线性代数，看了部分机器人的知识。都说利用网络进行学习更方便了，但是我感觉我陷入了一个怪圈，看完网课自己往往没记住什么，学什么都不成体系，一些编程语言，如果不经常实践，慢慢都会遗忘，最后选择再看一遍网课。也许多实践才能学好知识吧。</p>
+<hr>
+
+<h3 id="我们登上并非我们所选择的舞台，拿着并非我们所选择的剧本，我有两个选择，第一种是弃演，第二种就是努力把这个剧本演好。"><a href="#我们登上并非我们所选择的舞台，拿着并非我们所选择的剧本，我有两个选择，第一种是弃演，第二种就是努力把这个剧本演好。" class="headerlink" title="我们登上并非我们所选择的舞台，拿着并非我们所选择的剧本，我有两个选择，第一种是弃演，第二种就是努力把这个剧本演好。"></a>我们登上并非我们所选择的舞台，拿着并非我们所选择的剧本，我有两个选择，第一种是弃演，第二种就是努力把这个剧本演好。</h3>
             </div>
             <hr/>
 
@@ -583,7 +495,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://qayqaq.github.io/2020/08/18/css3-xin-zeng-de-zhuan-huan-guo-du-dong-hua/">http://qayqaq.github.io/2020/08/18/css3-xin-zeng-de-zhuan-huan-guo-du-dong-hua/</a>
+                    <a href="http://qayqaq.github.io/2020/09/06/da-san-fan-xiao-hou-sui-bi/">http://qayqaq.github.io/2020/09/06/da-san-fan-xiao-hou-sui-bi/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -620,11 +532,7 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/CSS/">
-                                    <span class="chip bg-color">CSS</span>
-                                </a>
-                            
+                            <span class="chip bg-color">无标签</span>
                         </div>
                     
                 </div>
@@ -793,7 +701,7 @@
         repo: 'blog_comments',
         owner: 'qayqaq',
         admin: ["qayqaq"],
-        id: '2020-08-18T10-57-59',
+        id: '2020-09-06T14-07-34',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -817,9 +725,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2020/09/06/da-san-fan-xiao-hou-sui-bi/">
                     <div class="card-image">
@@ -840,9 +749,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-09-06
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-06
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -855,6 +764,7 @@
                         </span>
                     </div>
                 </div>
+
                 
             </div>
         </div>
@@ -865,34 +775,36 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/08/17/fei-xian-xing-kong-zhi-li-lun-zhi-shi-shu-li/">
+                <a href="/2020/08/18/css3-xin-zeng-de-zhuan-huan-guo-du-dong-hua/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="非线性控制理论知识梳理">
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="CSS3新增的转换过渡动画">
                         
-                        <span class="card-title">非线性控制理论知识梳理</span>
+                        <span class="card-title">CSS3新增的转换过渡动画</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            最近学习了非线性控制理论，把笔记存下来。
-Lyapunov Direct Method 李雅普诺夫直接方法
-The Invariance Principle - LaSalle’s Theorem 拉塞尔不变性原理
-Basic Feedba
+                            CSS3 中新增了三大类样式，转换，过渡，动画。学习这三种样式的前提是 a 标签的伪类选择器。
+a 标签的伪类选择器
+:link 可以修改从未被访问过状态的样式
+:visited 访问过状态
+:hover 悬停状态
+:active 长按状态
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-08-17
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-08-18
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA/" class="post-category">
-                                    控制理论
+                            <a href="/categories/CSS%E6%A0%B7%E5%BC%8F/" class="post-category">
+                                    CSS样式
                                 </a>
                             
                             
@@ -902,8 +814,8 @@ Basic Feedba
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E9%9D%9E%E7%BA%BF%E6%80%A7%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA/">
-                        <span class="chip bg-color">非线性控制理论</span>
+                    <a href="/tags/CSS/">
+                        <span class="chip bg-color">CSS</span>
                     </a>
                     
                 </div>
