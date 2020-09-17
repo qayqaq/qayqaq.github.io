@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>ST89S51硬件结构</title>
+      <link href="/2020/09/17/at89s51-ying-jian-jie-gou/"/>
+      <url>/2020/09/17/at89s51-ying-jian-jie-gou/</url>
+      
+        <content type="html"><![CDATA[<p>嵌入式课以 ST89S51 芯片为例讲解了单片机，有很多没接触过的知识，课后就想着没什么体系地把记着的东西存下来。</p><p>整个硬件结构包含<strong>ALU 微处理器来控制逻辑，SFR 是特殊功能寄存器，RAM 是数据存储器，ROM/EPROM 是程序存储器，P0 P1 P2 P3 是 I/O口，还有串口，中断，定时器资源</strong>。</p><h3 id="关于-P0"><a href="#关于-P0" class="headerlink" title="关于 P0"></a>关于 P0</h3><ul><li>稍微细致来讲，P0 口是由<strong>LATCH</strong>和<strong>PORT0 DRIVER</strong>，通过<strong>driver</strong>这个词是<strong>驱动</strong>，代表了与能量有关，这里有一个点是，单片机输出的 0 和 1 不只依赖于单片机自身，不是我写程序让它输出 1 就会输出 1,如果把端口接了地，就不会输出 1，所以是<strong>需要单片机和外部设备匹配的</strong>。 </li><li>在谈论 P0 P1 P2 P3 时最好要加上语境，在硬件中代表接口，但是在软件中是寄存器，它们四个各<strong>代表一个字节</strong>，P0.0 P0.1 P0.2 … P0.6 P0.7 分别是<strong>一个字节的 8 位</strong>，P0.0 就是 P0 寄存器的最低位。令 <em>P0=00x0</em> 就是输出8个0。</li><li>对 P0.0(AD0) 代表了引脚的<strong>分时复用</strong>，A 与 D 分别代表 <strong>address地址总线</strong>和<strong>data数据总线</strong>，AD0 就代表了总线的第 0 位，最大是 A15 则代表地址总线的带宽是 15。</li></ul><h3 id="AT89S51的新增功能"><a href="#AT89S51的新增功能" class="headerlink" title="AT89S51的新增功能"></a>AT89S51的新增功能</h3><p>按照老师讲，AT89S51 也已经是比较老的芯片，但是很基本，它与之前的 AT89C51 相比有以下改进：</p><ul><li>增加了 ISP（In System Program）</li><li>增加了一个数据指针，增加灵活性</li><li>增加了看门狗定时器</li><li>增加了断电标志</li><li>增加了掉电状态下的中断回复模式</li></ul><h3 id="引脚"><a href="#引脚" class="headerlink" title="引脚"></a>引脚</h3><p>引脚大致可以分为三类：</p><ul><li><p>控制类：$\overline{EA}/VPP$，$ALE/\overline{PROG}$，$\overline{PSEN}$，$RST$</p><ul><li>$\overline{PSEN}$ 是片外程序存储器读选通信号，低电平有效</li><li>$ALE$ 当单片机正常运行时，此端口有正脉冲输出，此频率为时钟振荡器频率的 $\frac{1}{6}$，这可以<strong>用于检查硬件故障。</strong><blockquote><p>一些引脚的功能是与扩展有关的，但是现在的趋势是直接换芯片，而不扩展。</p></blockquote></li></ul></li><li><p>I/O口类</p></li><li><p>电源与时钟类：$VSS$，$VDD$，$XTAL1$，$XTAL2$，$T0$，$T1$</p><ul><li>如果用晶振与微调电容，则$XTAL1$，$XTAL2$都需要接</li><li>如果用外部时钟源（多CPU同步的情形），则$XTAL1$接信号，$XTAL2$悬空</li><li>单片机开始工作，需要有三个条件：<strong>电源，晶振，复位</strong>，因此电源，晶振，复位，再加上 MCU 和 register 就构成了<strong>单片机的最小系统。</strong></li></ul></li></ul><h3 id="控制器"><a href="#控制器" class="headerlink" title="控制器"></a>控制器</h3><ul><li><strong>算数逻辑运算单元 ALU</strong> 可以进行 1. 逻辑运算 2. 算数运算 3. 位操作，其中位操作是比较快的（在嵌入式编程中要考虑时间与空间的节省）</li><li><strong>程序计数器PC</strong> 存指令的地址，16位，复位后归为 <strong>0000H</strong>即回到最开始开始执行指令。</li></ul><h3 id="存储器"><a href="#存储器" class="headerlink" title="存储器"></a>存储器</h3><ul><li><p><strong>ROM，程序存储器</strong>，CPU运行时不能更改，断电后信息不变，用于存放程序和常数。</p></li><li><p><strong>RAM，数据存储器</strong>，CPU运行时暂存数据的地方，掉电后丢失。</p><blockquote><p>片内 RAM 可以分为 <strong>1. 工作寄存器区 2. 位寻址区 3. 通用RAM区 4. SFR区</strong>，其中通用RAM区就是存放临时变量的地方，SFR区就是控制单片机上各种资源与功能的寄存器区，很重要，可以说，<strong>操作单片机就是操作SFR。</strong></p></blockquote></li></ul><h3 id="并行口驱动LED发光二极管"><a href="#并行口驱动LED发光二极管" class="headerlink" title="并行口驱动LED发光二极管"></a>并行口驱动LED发光二极管</h3><p>应该用<strong>低电平驱动</strong>，利用灌电流，因为一般单片机输出功率能力不强，但承受能力较强。</p><p>我太菜了 wtcl</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 单片机 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>大三返校后随笔</title>
       <link href="/2020/09/06/da-san-fan-xiao-hou-sui-bi/"/>
       <url>/2020/09/06/da-san-fan-xiao-hou-sui-bi/</url>

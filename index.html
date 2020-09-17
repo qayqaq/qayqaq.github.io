@@ -367,7 +367,7 @@
 
 <script>
     // 每天切换 banner 图.  Switch banner image every day.
-    var bannerUrl = "/medias/banner/" + new Date().getDay() + '.jpg';
+    var bannerUrl = "https://cdn.jsdelivr.net/gh/qayqaq/qayqaq.github.io/medias/banner/" + new Date().getDay() + '.jpg';
     $('.bg-cover').css('background-image', 'url(' + bannerUrl + ')');
 </script>
 
@@ -528,6 +528,50 @@
     <!-- 所有文章卡片 -->
     <article id="articles" class="container articles">
         <div class="row article-row">
+            
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2020/09/17/at89s51-ying-jian-jie-gou/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="ST89S51硬件结构">
+                            
+                            <span class="card-title">ST89S51硬件结构</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                嵌入式课以 ST89S51 芯片为例讲解了单片机，有很多没接触过的知识，课后就想着没什么体系地把记着的东西存下来。
+整个硬件结构包含ALU 微处理器来控制逻辑，SFR 是特殊功能寄存器，RAM 是数据存储器，ROM/EPROM 是程序存储器
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-17
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-user fa-fw"></i>
+                                Qay
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/">
+                            <span class="chip bg-color">单片机</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
             
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
@@ -1078,58 +1122,6 @@ STATICFILES_DIRS设
                         
                         <a href="/tags/django%EF%BC%8C-Cookie%EF%BC%8C-Session/">
                             <span class="chip bg-color">django， Cookie， Session</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2020/08/02/django-de-mo-xing/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="django的模型">
-                            
-                            <span class="card-title">django的模型</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                字段属性和选项：列举部分常用的，其余参考官方文档。
-字段类型，使用时需要引入 django.db.models：
-
-Autofield: 自增的，不用指定；
-BooleanField: 布尔；
-NullBooleanField: 支持 Nu
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-08-02
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/django%E6%A1%86%E6%9E%B6/" class="post-category">
-                                    django框架
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/django/">
-                            <span class="chip bg-color">django</span>
                         </a>
                         
                     </div>

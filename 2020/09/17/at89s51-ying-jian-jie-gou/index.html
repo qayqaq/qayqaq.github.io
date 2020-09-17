@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="大三返校后随笔, QayQaq">
+    <meta name="keywords" content="ST89S51硬件结构, QayQaq">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>大三返校后随笔 | QayQaq</title>
+    <title>ST89S51硬件结构 | QayQaq</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -286,12 +286,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/16.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">大三返校后随笔</h1>
+                    <h1 class="description center-align post-title">ST89S51硬件结构</h1>
                 </div>
             </div>
         </div>
@@ -406,21 +406,16 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
-                    
-                </div>
-                <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                    <div class="article-tag">
                         
-                            <a href="/categories/%E9%9A%8F%E7%AC%94/" class="post-category">
-                                随笔
+                            <a href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/">
+                                <span class="chip bg-color">单片机</span>
                             </a>
                         
                     </div>
+                    
+                </div>
+                <div class="col s5 right-align">
                     
                 </div>
             </div>
@@ -429,7 +424,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-09-06
+                    2020-09-17
                 </div>
                 
 
@@ -445,32 +440,58 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="疫情返校后的假期杂记"><a href="#疫情返校后的假期杂记" class="headerlink" title="疫情返校后的假期杂记"></a>疫情返校后的假期杂记</h1><p>经历了史上最长的假期，我终于在昨天返回了学校，昨天基本一直在收拾宿舍，今天中午像往常一样睡不着，遂起床想写个随笔，记录一下我还能想起来的，我认为值得记录下的琐事。</p>
-<hr>
+                <p>嵌入式课以 ST89S51 芯片为例讲解了单片机，有很多没接触过的知识，课后就想着没什么体系地把记着的东西存下来。</p>
+<p>整个硬件结构包含<strong>ALU 微处理器来控制逻辑，SFR 是特殊功能寄存器，RAM 是数据存储器，ROM/EPROM 是程序存储器，P0 P1 P2 P3 是 I/O口，还有串口，中断，定时器资源</strong>。</p>
+<h3 id="关于-P0"><a href="#关于-P0" class="headerlink" title="关于 P0"></a>关于 P0</h3><ul>
+<li>稍微细致来讲，P0 口是由<strong>LATCH</strong>和<strong>PORT0 DRIVER</strong>，通过<strong>driver</strong>这个词是<strong>驱动</strong>，代表了与能量有关，这里有一个点是，单片机输出的 0 和 1 不只依赖于单片机自身，不是我写程序让它输出 1 就会输出 1,如果把端口接了地，就不会输出 1，所以是<strong>需要单片机和外部设备匹配的</strong>。 </li>
+<li>在谈论 P0 P1 P2 P3 时最好要加上语境，在硬件中代表接口，但是在软件中是寄存器，它们四个各<strong>代表一个字节</strong>，P0.0 P0.1 P0.2 … P0.6 P0.7 分别是<strong>一个字节的 8 位</strong>，P0.0 就是 P0 寄存器的最低位。令 <em>P0=00x0</em> 就是输出8个0。</li>
+<li>对 P0.0(AD0) 代表了引脚的<strong>分时复用</strong>，A 与 D 分别代表 <strong>address地址总线</strong>和<strong>data数据总线</strong>，AD0 就代表了总线的第 0 位，最大是 A15 则代表地址总线的带宽是 15。</li>
+</ul>
+<h3 id="AT89S51的新增功能"><a href="#AT89S51的新增功能" class="headerlink" title="AT89S51的新增功能"></a>AT89S51的新增功能</h3><p>按照老师讲，AT89S51 也已经是比较老的芯片，但是很基本，它与之前的 AT89C51 相比有以下改进：</p>
+<ul>
+<li>增加了 ISP（In System Program）</li>
+<li>增加了一个数据指针，增加灵活性</li>
+<li>增加了看门狗定时器</li>
+<li>增加了断电标志</li>
+<li>增加了掉电状态下的中断回复模式</li>
+</ul>
+<h3 id="引脚"><a href="#引脚" class="headerlink" title="引脚"></a>引脚</h3><p>引脚大致可以分为三类：</p>
+<ul>
+<li><p>控制类：$\overline{EA}/VPP$，$ALE/\overline{PROG}$，$\overline{PSEN}$，$RST$</p>
+<ul>
+<li>$\overline{PSEN}$ 是片外程序存储器读选通信号，低电平有效</li>
+<li>$ALE$ 当单片机正常运行时，此端口有正脉冲输出，此频率为时钟振荡器频率的 $\frac{1}{6}$，这可以<strong>用于检查硬件故障。</strong><blockquote>
+<p>一些引脚的功能是与扩展有关的，但是现在的趋势是直接换芯片，而不扩展。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>I/O口类</p>
+</li>
+<li><p>电源与时钟类：$VSS$，$VDD$，$XTAL1$，$XTAL2$，$T0$，$T1$</p>
+<ul>
+<li>如果用晶振与微调电容，则$XTAL1$，$XTAL2$都需要接</li>
+<li>如果用外部时钟源（多CPU同步的情形），则$XTAL1$接信号，$XTAL2$悬空</li>
+<li>单片机开始工作，需要有三个条件：<strong>电源，晶振，复位</strong>，因此电源，晶振，复位，再加上 MCU 和 register 就构成了<strong>单片机的最小系统。</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="控制器"><a href="#控制器" class="headerlink" title="控制器"></a>控制器</h3><ul>
+<li><strong>算数逻辑运算单元 ALU</strong> 可以进行 1. 逻辑运算 2. 算数运算 3. 位操作，其中位操作是比较快的（在嵌入式编程中要考虑时间与空间的节省）</li>
+<li><strong>程序计数器PC</strong> 存指令的地址，16位，复位后归为 <strong>0000H</strong>即回到最开始开始执行指令。</li>
+</ul>
+<h3 id="存储器"><a href="#存储器" class="headerlink" title="存储器"></a>存储器</h3><ul>
+<li><p><strong>ROM，程序存储器</strong>，CPU运行时不能更改，断电后信息不变，用于存放程序和常数。</p>
+</li>
+<li><p><strong>RAM，数据存储器</strong>，CPU运行时暂存数据的地方，掉电后丢失。</p>
+<blockquote>
+<p>片内 RAM 可以分为 <strong>1. 工作寄存器区 2. 位寻址区 3. 通用RAM区 4. SFR区</strong>，其中通用RAM区就是存放临时变量的地方，SFR区就是控制单片机上各种资源与功能的寄存器区，很重要，可以说，<strong>操作单片机就是操作SFR。</strong></p>
+</blockquote>
+</li>
+</ul>
+<h3 id="并行口驱动LED发光二极管"><a href="#并行口驱动LED发光二极管" class="headerlink" title="并行口驱动LED发光二极管"></a>并行口驱动LED发光二极管</h3><p>应该用<strong>低电平驱动</strong>，利用灌电流，因为一般单片机输出功率能力不强，但承受能力较强。</p>
+<p>我太菜了 wtcl</p>
 
-<p>第一件就是“天天向上组织”。在假期的时候，学习效率很低，自制力也越来越差，于是打算去家附近的图书馆每天自习，结果竟然发现，有一些高中和初中同学也在这里自习，大家有的准备考研，有的准备毕业工作，都在努力学习，有比较熟络的，也有初中之后就再也没见过的，但是经过了着一个假期，大家的关系都亲近了起来，就这样成为了一个组织。</p>
-<p>这个书房我在高考之后就去过，那时还没什么名气，去的人也不多。因为疫情，大家都回不去学校，结果附近的人就都去那里学习了，每天都要早去占座。还好我们的组织中有同学能够起床很早哈哈，每天都能占到座位。中午也可以在旁边的食堂吃饭，真的是特别方便，这一段日子简直是找回了在学校学习的效率和感觉，甚至要更好，因为即使在学校，更多的时候也是自己一个人学习，说实话感觉到了一种陪伴，没有那么孤单。</p>
-<p>开学之前，大家也都聚了几次餐，还在电影院白嫖看了场电影，也算是好事坏事都一起干了。我们还约好了以后放假回家仍然一起自习。对我这个不擅长社交的人来说，我真的太喜欢这样了，真切地希望我们能够一直继续下去。</p>
-<hr>
-
-<p>打麻将也是一件很开心的事，我初高中的时候可以说是特别爱打麻将了，上了大学之后也没有人可以一起玩，就不怎么玩了。这次放假回家和高中同学们打了几次麻将，很惊讶现在的打法和原来的差了好多，而且大家现在也开始实打实的赢钱了。虽然打麻将还是很欢乐的，但是想来，也确实是好久没和一些高中同学有来往了，即使真的聊天，也不知道该聊什么，听说大家还是有几个群的，麻将群，王者群，篮球群，每天在一起闲聊扯淡液是不错的，我也真的是很感谢很多同学，在聚餐的时候想起来叫上我，能减少一些在生活中我心中对他人的疏离感。</p>
-<p>我现在最珍惜的应该就是这段时间建立起的朋友圈，我比较害怕再失去这些朋友，也不是很爱结交新朋友。</p>
-<hr>
-
-<p>这段时间还报了个英语口语班，虽然想出国的念头不断被国际形势和特朗普也许还有我心中不断萌发的爱国情怀消磨，但是我觉得在国内也是应该把口语学好。这个教育机构的理念大概就是模仿重复表现再反复练习，老师称这是最好的学习口语的体系模式，毕竟人家是教英语的教育机构，把教学方法说的再好也是正常，经过了解之后我还是挺认可的，但是我的思路没那么复杂，我感觉无非是把文本一遍一遍背熟即可。老师还很强调表演，我则非常排斥，并且很惊奇为什么班上很多同学都那么热衷且活跃。</p>
-<p>和一个同学聊过之后发现，可能真的是生长和学习环境造就了一个人，我在一个四线小城市长大，其实是挺自卑的，但是在北京我却知道了英语固然重要，但是也只是一个工具，有很多东西远比英语重要的多，国家科技发展也绝不是把什么语音语调练到极致就可以了。但是这个同学说她之前在农村读书，当得知了我在北京上大学之后，很高兴地说有了一个谈资。</p>
-<p>我真的极其赞赏他们的积极乐观态度，这也是我不具有的。永远不要唉声叹气，境遇不如自己的人有那么多，他们还都在积极学习生活。但是不得不说我本身与这个机构的理念和价值观差的很多，无法说谁对谁错，只是各行各业需要不同性格不同能力的人罢了，我明确我需要所得什么就可以了。</p>
-<hr>
-
-<p>因为高考之后就没再回来看过老师，所以临开学之前，和两个同学一起回到了高中去看望班主任。老师之前和我们说我们这届之后就不再当班主任了，说太累了，但是今年，学校把各个班在校榜名列前茅的学生聚了起来组成了一个小班让她来代班了，可见我的班主任多么受认可，我极其有幸能成为她的学生。</p>
-<p>我们回首过去，谈到未来，还对比了当时的我们和现在的她的学生，时而发笑时而深思，看着在晚自习的学弟学妹们，真的比较感慨，一时又说不上来什么，最终值得感叹高中时光是多么美好，身边的人时一辈子里最后的真正意义上的同学，而早晚这些人里面也有很多会渐行渐远。</p>
-<p>老师还邀请我给不久后的高三誓师大会录了视频，给学弟学妹们加油打气，我也认真准备了稿子，将高考的现实性和重要性说给他们听，如果能有任何一个人有那么一点触动，我都很满足。</p>
-<hr>
-
-<p>假期学了一些 HTML CSS Javescript 主要是前端的东西，还过了一遍线性代数，看了部分机器人的知识。都说利用网络进行学习更方便了，但是我感觉我陷入了一个怪圈，看完网课自己往往没记住什么，学什么都不成体系，一些编程语言，如果不经常实践，慢慢都会遗忘，最后选择再看一遍网课。也许多实践才能学好知识吧。</p>
-<hr>
-
-<h3 id="我们登上并非我们所选择的舞台，拿着并非我们所选择的剧本，我有两个选择，第一种是弃演，第二种就是努力把这个剧本演好。"><a href="#我们登上并非我们所选择的舞台，拿着并非我们所选择的剧本，我有两个选择，第一种是弃演，第二种就是努力把这个剧本演好。" class="headerlink" title="我们登上并非我们所选择的舞台，拿着并非我们所选择的剧本，我有两个选择，第一种是弃演，第二种就是努力把这个剧本演好。"></a>我们登上并非我们所选择的舞台，拿着并非我们所选择的剧本，我有两个选择，第一种是弃演，第二种就是努力把这个剧本演好。</h3>
             </div>
             <hr/>
 
@@ -495,7 +516,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://qayqaq.github.io/2020/09/06/da-san-fan-xiao-hou-sui-bi/">http://qayqaq.github.io/2020/09/06/da-san-fan-xiao-hou-sui-bi/</a>
+                    <a href="http://qayqaq.github.io/2020/09/17/at89s51-ying-jian-jie-gou/">http://qayqaq.github.io/2020/09/17/at89s51-ying-jian-jie-gou/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -532,7 +553,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/">
+                                    <span class="chip bg-color">单片机</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -701,7 +726,7 @@
         repo: 'blog_comments',
         owner: 'qayqaq',
         admin: ["qayqaq"],
-        id: '2020-09-06T14-07-34',
+        id: '2020-09-17T09-52-33',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -725,9 +750,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2020/09/17/at89s51-ying-jian-jie-gou/">
                     <div class="card-image">
@@ -746,9 +772,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-09-17
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-17
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -757,6 +783,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -775,49 +802,39 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/08/18/css3-xin-zeng-de-zhuan-huan-guo-du-dong-hua/">
+                <a href="/2020/09/06/da-san-fan-xiao-hou-sui-bi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="CSS3新增的转换过渡动画">
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="大三返校后随笔">
                         
-                        <span class="card-title">CSS3新增的转换过渡动画</span>
+                        <span class="card-title">大三返校后随笔</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            CSS3 中新增了三大类样式，转换，过渡，动画。学习这三种样式的前提是 a 标签的伪类选择器。
-a 标签的伪类选择器
-:link 可以修改从未被访问过状态的样式
-:visited 访问过状态
-:hover 悬停状态
-:active 长按状态
+                            疫情返校后的假期杂记经历了史上最长的假期，我终于在昨天返回了学校，昨天基本一直在收拾宿舍，今天中午像往常一样睡不着，遂起床想写个随笔，记录一下我还能想起来的，我认为值得记录下的琐事。
+
+
+第一件就是“天天向上组织”。在假期的时候，学习效率很
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-08-18
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-06
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/CSS%E6%A0%B7%E5%BC%8F/" class="post-category">
-                                    CSS样式
+                            <a href="/categories/%E9%9A%8F%E7%AC%94/" class="post-category">
+                                    随笔
                                 </a>
                             
                             
                         </span>
                     </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/CSS/">
-                        <span class="chip bg-color">CSS</span>
-                    </a>
-                    
                 </div>
                 
             </div>
